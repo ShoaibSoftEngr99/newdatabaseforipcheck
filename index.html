@@ -39,8 +39,8 @@
         }
 
         .container {
-            max-width: 600px;
-            width: 90%;
+            width: 95%;
+            max-width: 800px;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             padding: 50px 45px;
@@ -264,28 +264,6 @@
         .upload-btn:hover {
             transform: translateY(-2px);
             box-shadow: var(--hover-shadow);
-        }
-
-        .daily-counter {
-            text-align: center;
-            padding: 30px;
-            background: linear-gradient(135deg, #a78bfa, #ec4899);
-            color: white;
-            border-radius: 16px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 25px rgba(167, 139, 250, 0.3);
-        }
-
-        .counter-number {
-            font-size: 4rem;
-            font-weight: 800;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .counter-label {
-            font-size: 1.2rem;
-            opacity: 0.95;
         }
 
         .logout-btn {
@@ -552,10 +530,6 @@
                 transform: translateX(0) translateY(-100px);
             }
             
-            .counter-number {
-                font-size: 3.5rem;
-            }
-            
             .logo {
                 width: 70px;
                 height: 70px;
@@ -573,10 +547,6 @@
             
             .header h1 {
                 font-size: 1.8rem;
-            }
-            
-            .counter-number {
-                font-size: 3rem;
             }
         }
     </style>
@@ -645,11 +615,6 @@
                 <div style="text-align: center; margin-top: 12px;">
                     <small style="color: var(--gray);">Press Enter to upload IP</small>
                 </div>
-            </div>
-
-            <div class="daily-counter">
-                <span class="counter-number" id="dailyCount">0</span>
-                <span class="counter-label">IPs Uploaded Today</span>
             </div>
 
             <button class="logout-btn" onclick="logout()">
@@ -806,7 +771,6 @@
                 document.getElementById('userWelcome').innerHTML = `<i class="fas fa-user-check"></i> Welcome, ${user.name}`;
                 
                 showNotification(`Welcome back, ${user.name}!`, 'success');
-                updateDailyCounter();
             } else {
                 showMessage('Invalid username or password!', 'error');
                 loginBtn.classList.add('shake');
@@ -842,39 +806,6 @@
                 document.getElementById('loginSection').style.display = 'none';
                 document.getElementById('dashboardSection').style.display = 'block';
                 document.getElementById('userWelcome').innerHTML = `<i class="fas fa-user-check"></i> Welcome, ${user.name}`;
-                updateDailyCounter();
-            }
-        }
-
-        // Daily IP counter
-        function getTodayKey() {
-            const now = new Date();
-            return `daily_ips_${now.toDateString()}`;
-        }
-
-        function getDailyIPs() {
-            const todayKey = getTodayKey();
-            const dailyIPs = getCloudData(todayKey);
-            return Array.isArray(dailyIPs) ? dailyIPs : [];
-        }
-
-        function saveDailyIPs(ips) {
-            const todayKey = getTodayKey();
-            return saveCloudData(todayKey, ips);
-        }
-
-        function updateDailyCounter() {
-            const dailyIPs = getDailyIPs();
-            const counterElement = document.getElementById('dailyCount');
-            const currentCount = parseInt(counterElement.textContent);
-            const newCount = dailyIPs.length;
-            
-            if (newCount !== currentCount) {
-                counterElement.style.animation = 'none';
-                setTimeout(() => {
-                    counterElement.style.animation = 'countUp 0.6s ease-out';
-                    counterElement.textContent = newCount;
-                }, 10);
             }
         }
 
@@ -918,15 +849,6 @@
                 return;
             }
             
-            // Check for duplicate IP in today's list
-            const dailyIPs = getDailyIPs();
-            if (dailyIPs.some(entry => entry.ip === ipAddress)) {
-                showNotification('IP already uploaded today!', 'error');
-                uploadBtn.classList.add('shake');
-                setTimeout(() => uploadBtn.classList.remove('shake'), 500);
-                return;
-            }
-            
             currentIP = ipAddress;
             showVerificationModal();
         }
@@ -943,16 +865,6 @@
         
         function confirmLink(isWorking) {
             if (isWorking) {
-                // Save to daily storage
-                const dailyIPs = getDailyIPs();
-                dailyIPs.push({
-                    ip: currentIP,
-                    timestamp: new Date().toISOString(),
-                    userId: currentUser.id,
-                    userName: currentUser.name
-                });
-                saveDailyIPs(dailyIPs);
-                
                 // Save to global storage
                 const allIPs = getAllStoredIPs();
                 allIPs.push({
@@ -965,7 +877,6 @@
                 saveAllIPs(allIPs);
                 
                 showNotification(`IP ${currentIP} uploaded successfully!`, 'success');
-                updateDailyCounter();
             } else {
                 showNotification(`IP ${currentIP} verification failed.`, 'error');
             }
