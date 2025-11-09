@@ -1,0 +1,13 @@
+{
+  "name": "ip-checker-system",
+  "version": "1.0.0",
+  "description": "Professional IP Checker with User Accounts",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "serve -s ."
+  },
+  "dependencies": {
+    "serve": "^14.0.0"
+  }
+}

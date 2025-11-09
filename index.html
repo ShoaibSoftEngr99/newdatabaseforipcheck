@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure IP Verification</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 480px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 40px 35px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideUp 0.6s ease;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 18px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .logo i {
+            font-size: 2.2rem;
+            color: white;
+        }
+
+        .header h1 {
+            color: var(--dark);
+            font-size: 2rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .login-section {
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 45px 15px 15px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 42px;
+            color: var(--gray);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .demo-credentials {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 18px;
+            border-radius: 12px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .demo-credentials h4 {
+            color: var(--dark);
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .demo-credentials p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .credential-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .dashboard-section {
+            display: none;
+        }
+
+        .user-welcome {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .ip-input-section {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            border: 2px dashed var(--gray-light);
+        }
+
+        .ip-input-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .ip-input-group input {
+            flex: 1;
+            padding: 15px 18px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ip-input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .upload-btn {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .daily-counter {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            color: white;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(167, 139, 250, 0.3);
+        }
+
+        .counter-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .counter-label {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+            margin-top: 15px;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .message.success {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+            border: 2px solid var(--success);
+        }
+
+        .message.error {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border: 2px solid var(--danger);
+        }
+
+        .verification-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .verification-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .verification-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .verification-modal.active .verification-content {
+            transform: scale(1);
+        }
+
+        .verification-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .verification-icon {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+
+        .verification-content h3 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .verification-content p {
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .verification-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            padding: 18px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            z-index: 1001;
+            display: none;
+            min-width: 400px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+            animation: slideDownNotification 0.4s ease forwards;
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+            border-color: var(--success);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border-color: var(--danger);
+        }
+
+        .notification.warning {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            border-color: var(--warning);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDownNotification {
+            from {
+                transform: translateX(-50%) translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes countUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes shake {
+            0%, 100% {transform: translateX(0);}
+            10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
+            20%, 40%, 60%, 80% {transform: translateX(5px);}
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 25px;
+                margin: 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .ip-input-group {
+                flex-direction: column;
+            }
+            
+            .ip-input-group input {
+                width: 100%;
+            }
+            
+            .verification-buttons {
+                flex-direction: column;
+            }
+            
+            .notification {
+                min-width: 90%;
+                left: 5%;
+                transform: translateX(0) translateY(-100px);
+            }
+            
+            .counter-number {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Section -->
+        <div class="login-section" id="loginSection">
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h1>IP Verification</h1>
+                <p>Secure IP Management System</p>
+            </div>
+
+            <div class="form-group">
+                <label for="username"><i class="fas fa-user"></i> Username</label>
+                <input type="text" id="username" placeholder="Enter your username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+
+            <button class="login-btn" onclick="login()">
+                <i class="fas fa-sign-in-alt"></i> Login to System
+            </button>
+
+            <div class="demo-credentials">
+                <h4><i class="fas fa-key"></i> Pre-configured Access</h4>
+                <p><i class="fas fa-envelope"></i> <strong>Username:</strong> liveagent123@gmail.com</p>
+                <p><i class="fas fa-lock"></i> <strong>Password:</strong> blueston123</p>
+                <div style="margin-top: 8px;">
+                    <span class="credential-badge">2000+ Users Capacity</span>
+                </div>
+            </div>
+
+            <div id="loginMessage" class="message"></div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="dashboard-section" id="dashboardSection">
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-shield-check"></i>
+                </div>
+                <h1>IP Dashboard</h1>
+                <p>Manage your IP addresses</p>
+            </div>
+
+            <div class="user-welcome" id="userWelcome">
+                <i class="fas fa-user-check"></i> Welcome, User
+            </div>
+
+            <div class="ip-input-section">
+                <div class="ip-input-group">
+                    <input type="text" id="ipAddress" placeholder="Paste IP address here (e.g., 192.168.1.1)" required>
+                    <button class="upload-btn" onclick="uploadIP()">
+                        <i class="fas fa-cloud-upload-alt"></i> Upload
+                    </button>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <small style="color: var(--gray);">Press Enter to upload IP</small>
+                </div>
+            </div>
+
+            <div class="daily-counter">
+                <span class="counter-number" id="dailyCount">0</span>
+                <span class="counter-label">IPs Uploaded Today</span>
+            </div>
+
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+
+            <div id="message" class="message"></div>
+        </div>
+    </div>
+
+    <!-- Verification Modal -->
+    <div class="verification-modal" id="verificationModal">
+        <div class="verification-content">
+            <div class="verification-icon">
+                <i class="fas fa-link"></i>
+            </div>
+            <h3>Verify IP Link</h3>
+            <p>Is the IP address accessible and the link working properly?</p>
+            <div class="verification-buttons">
+                <button class="btn btn-success" onclick="confirmLink(true)">
+                    <i class="fas fa-check"></i> Yes, Working
+                </button>
+                <button class="btn btn-danger" onclick="confirmLink(false)">
+                    <i class="fas fa-times"></i> Not Working
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Notification -->
+    <div id="globalNotification" class="notification"></div>
+
+    <script>
+        // Storage keys
+        const IP_STORAGE_KEY = 'ip_system_ips';
+        const USER_STORAGE_KEY = 'ip_system_users';
+        const CURRENT_USER_KEY = 'ip_current_user';
+        
+        // Pre-set user credentials
+        const PRESET_USER = {
+            id: 'liveagent',
+            name: 'liveagent123@gmail.com',
+            password: 'blueston123',
+            status: 'Active',
+            created: new Date().toISOString()
+        };
+
+        let currentIP = '';
+        let currentUser = null;
+
+        // Storage functions
+        function getCloudData(key) {
+            try {
+                const stored = localStorage.getItem(key);
+                return stored ? JSON.parse(stored) : (key === USER_STORAGE_KEY ? getDefaultUsers() : []);
+            } catch (e) {
+                return key === USER_STORAGE_KEY ? getDefaultUsers() : [];
+            }
+        }
+
+        function saveCloudData(key, data) {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function getDefaultUsers() {
+            return {
+                'admin': {
+                    id: 'admin',
+                    name: 'Administrator',
+                    password: 'admin123',
+                    status: 'Active',
+                    created: new Date().toISOString()
+                },
+                'liveagent': PRESET_USER
+            };
+        }
+
+        function getUserAccounts() {
+            return getCloudData(USER_STORAGE_KEY);
+        }
+
+        function saveUserAccounts(users) {
+            return saveCloudData(USER_STORAGE_KEY, users);
+        }
+
+        function getAllStoredIPs() {
+            return getCloudData(IP_STORAGE_KEY);
+        }
+
+        function saveAllIPs(ips) {
+            return saveCloudData(IP_STORAGE_KEY, ips);
+        }
+
+        function getCurrentUser() {
+            try {
+                const stored = localStorage.getItem(CURRENT_USER_KEY);
+                return stored ? JSON.parse(stored) : null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function saveCurrentUser(user) {
+            localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('globalNotification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 4000);
+        }
+
+        // Login function
+        function login() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const loginMessage = document.getElementById('loginMessage');
+            const loginBtn = document.querySelector('.login-btn');
+
+            if (!username || !password) {
+                showMessage('Please enter both username and password!', 'error');
+                loginBtn.classList.add('shake');
+                setTimeout(() => loginBtn.classList.remove('shake'), 500);
+                return;
+            }
+
+            const users = getUserAccounts();
+            const user = Object.values(users).find(u => 
+                (u.name.toLowerCase() === username.toLowerCase() || u.id.toLowerCase() === username.toLowerCase()) && 
+                u.password === password
+            );
+
+            if (user) {
+                if (user.status === 'Inactive') {
+                    showMessage('Account inactive. Contact administrator.', 'error');
+                    return;
+                }
+
+                currentUser = user;
+                saveCurrentUser(user);
+                
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('dashboardSection').style.display = 'block';
+                document.getElementById('userWelcome').innerHTML = `<i class="fas fa-user-check"></i> Welcome, ${user.name}`;
+                
+                showNotification(`Welcome back, ${user.name}!`, 'success');
+                updateDailyCounter();
+            } else {
+                showMessage('Invalid username or password!', 'error');
+                loginBtn.classList.add('shake');
+                setTimeout(() => loginBtn.classList.remove('shake'), 500);
+            }
+        }
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('loginMessage');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem(CURRENT_USER_KEY);
+            
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('loginSection').style.display = 'block';
+            
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('loginMessage').style.display = 'none';
+            
+            showNotification('Logged out successfully!', 'warning');
+        }
+
+        function checkLoginStatus() {
+            const user = getCurrentUser();
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('dashboardSection').style.display = 'block';
+                document.getElementById('userWelcome').innerHTML = `<i class="fas fa-user-check"></i> Welcome, ${user.name}`;
+                updateDailyCounter();
+            }
+        }
+
+        // Daily IP counter
+        function getTodayKey() {
+            const now = new Date();
+            return `daily_ips_${now.toDateString()}`;
+        }
+
+        function getDailyIPs() {
+            const todayKey = getTodayKey();
+            const dailyIPs = getCloudData(todayKey);
+            return Array.isArray(dailyIPs) ? dailyIPs : [];
+        }
+
+        function saveDailyIPs(ips) {
+            const todayKey = getTodayKey();
+            return saveCloudData(todayKey, ips);
+        }
+
+        function updateDailyCounter() {
+            const dailyIPs = getDailyIPs();
+            const counterElement = document.getElementById('dailyCount');
+            const currentCount = parseInt(counterElement.textContent);
+            const newCount = dailyIPs.length;
+            
+            if (newCount !== currentCount) {
+                counterElement.style.animation = 'none';
+                setTimeout(() => {
+                    counterElement.style.animation = 'countUp 0.6s ease-out';
+                    counterElement.textContent = newCount;
+                }, 10);
+            }
+        }
+
+        function isDuplicateIP(ip) {
+            const allIPs = getAllStoredIPs();
+            return allIPs.some(entry => entry.ip === ip);
+        }
+
+        function uploadIP() {
+            if (!currentUser) {
+                showNotification('Please login first!', 'error');
+                return;
+            }
+
+            const ipAddress = document.getElementById('ipAddress').value.trim();
+            const messageDiv = document.getElementById('message');
+            const uploadBtn = document.querySelector('.upload-btn');
+            
+            messageDiv.style.display = 'none';
+            
+            if (!ipAddress) {
+                showNotification('Please enter an IP address!', 'warning');
+                uploadBtn.classList.add('shake');
+                setTimeout(() => uploadBtn.classList.remove('shake'), 500);
+                return;
+            }
+            
+            const ipPattern = /^(\d{1,3}\.){3}\d{1,3}$/;
+            if (!ipPattern.test(ipAddress)) {
+                showNotification('Please enter a valid IP address!', 'error');
+                uploadBtn.classList.add('shake');
+                setTimeout(() => uploadBtn.classList.remove('shake'), 500);
+                return;
+            }
+            
+            // Check for duplicate IP
+            if (isDuplicateIP(ipAddress)) {
+                showNotification('Duplicate IP detected! Use different IP.', 'error');
+                uploadBtn.classList.add('shake');
+                setTimeout(() => uploadBtn.classList.remove('shake'), 500);
+                return;
+            }
+            
+            // Check for duplicate IP in today's list
+            const dailyIPs = getDailyIPs();
+            if (dailyIPs.some(entry => entry.ip === ipAddress)) {
+                showNotification('IP already uploaded today!', 'error');
+                uploadBtn.classList.add('shake');
+                setTimeout(() => uploadBtn.classList.remove('shake'), 500);
+                return;
+            }
+            
+            currentIP = ipAddress;
+            showVerificationModal();
+        }
+        
+        function showVerificationModal() {
+            const modal = document.getElementById('verificationModal');
+            modal.classList.add('active');
+        }
+        
+        function hideVerificationModal() {
+            const modal = document.getElementById('verificationModal');
+            modal.classList.remove('active');
+        }
+        
+        function confirmLink(isWorking) {
+            if (isWorking) {
+                // Save to daily storage
+                const dailyIPs = getDailyIPs();
+                dailyIPs.push({
+                    ip: currentIP,
+                    timestamp: new Date().toISOString(),
+                    userId: currentUser.id,
+                    userName: currentUser.name
+                });
+                saveDailyIPs(dailyIPs);
+                
+                // Save to global storage
+                const allIPs = getAllStoredIPs();
+                allIPs.push({
+                    ip: currentIP,
+                    timestamp: new Date().toISOString(),
+                    userId: currentUser.id,
+                    userName: currentUser.name,
+                    type: 'user_upload'
+                });
+                saveAllIPs(allIPs);
+                
+                showNotification(`IP ${currentIP} uploaded successfully!`, 'success');
+                updateDailyCounter();
+            } else {
+                showNotification(`IP ${currentIP} verification failed.`, 'error');
+            }
+            
+            document.getElementById('ipAddress').value = '';
+            hideVerificationModal();
+        }
+
+        // Enter key support
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+
+        document.getElementById('ipAddress').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                uploadIP();
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('verificationModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideVerificationModal();
+            }
+        });
+
+        // Initialize system
+        function initializeSystem() {
+            const users = getUserAccounts();
+            const defaultUsers = getDefaultUsers();
+            const updatedUsers = { ...defaultUsers, ...users };
+            saveUserAccounts(updatedUsers);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSystem();
+            checkLoginStatus();
+        });
+    </script>
+</body>
+</html>
