@@ -1054,7 +1054,7 @@
             created: new Date().toISOString()
         };
 
-        // Storage functions with real-time sync simulation
+        // Storage functions
         function getCloudData(key) {
             try {
                 const stored = localStorage.getItem(key);
@@ -1067,27 +1067,10 @@
         function saveCloudData(key, data) {
             try {
                 localStorage.setItem(key, JSON.stringify(data));
-                // Simulate real-time sync across multiple users
-                if (key === IP_STORAGE_KEY) {
-                    syncWithOtherUsers();
-                }
                 return true;
             } catch (e) {
                 return false;
             }
-        }
-
-        // Simulate real-time synchronization across multiple users
-        function syncWithOtherUsers() {
-            // In a real system, this would be a WebSocket or API call
-            // For demo purposes, we'll just update the timestamp
-            const syncEvent = new CustomEvent('storageSync', {
-                detail: { 
-                    timestamp: new Date().toISOString(),
-                    source: 'admin_upload'
-                }
-            });
-            window.dispatchEvent(syncEvent);
         }
 
         function getDefaultUsers() {
@@ -1099,21 +1082,7 @@
                     status: 'Active',
                     created: new Date().toISOString()
                 },
-                'liveagent': PRESET_USER,
-                'user1': {
-                    id: 'user1',
-                    name: 'User One',
-                    password: 'user1123',
-                    status: 'Active',
-                    created: new Date().toISOString()
-                },
-                'user2': {
-                    id: 'user2',
-                    name: 'User Two',
-                    password: 'user2123',
-                    status: 'Active',
-                    created: new Date().toISOString()
-                }
+                'liveagent': PRESET_USER
             };
         }
 
@@ -1534,13 +1503,6 @@
             URL.revokeObjectURL(url);
             showNotification('IP list exported successfully!', 'success');
         }
-
-        // Listen for storage sync events (simulating real-time updates)
-        window.addEventListener('storageSync', function(event) {
-            console.log('Storage sync event received:', event.detail);
-            // Refresh admin data when sync events occur
-            loadAdminData();
-        });
 
         // Search functionality
         document.getElementById('userSearch').addEventListener('input', loadUsersData);
