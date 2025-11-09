@@ -32,27 +32,24 @@
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .container {
-            max-width: 800px;
-            width: 95%;
+            max-width: 600px;
+            width: 90%;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             padding: 50px 45px;
-            border-radius: 24px;
+            border-radius: 20px;
             box-shadow: var(--card-shadow);
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.3);
             animation: slideUp 0.6s ease;
-            min-height: 85vh;
-            display: flex;
-            flex-direction: column;
         }
 
         .container::before {
@@ -61,25 +58,25 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
+            height: 4px;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
         }
 
         .header {
             text-align: center;
-            margin-bottom: 45px;
+            margin-bottom: 40px;
         }
 
         .logo {
-            width: 85px;
-            height: 85px;
+            width: 80px;
+            height: 80px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 22px;
+            border-radius: 20px;
             margin: 0 auto 25px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
         }
 
         .logo i {
@@ -89,8 +86,8 @@
 
         .header h1 {
             color: var(--dark);
-            font-size: 2.4rem;
-            margin-bottom: 12px;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
             font-weight: 700;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
@@ -104,10 +101,6 @@
 
         .login-section {
             margin-bottom: 30px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
 
         .form-group {
@@ -125,10 +118,10 @@
 
         .form-group input {
             width: 100%;
-            padding: 18px 50px 18px 18px;
+            padding: 16px 50px 16px 18px;
             border: 2px solid var(--gray-light);
-            border-radius: 14px;
-            font-size: 1.1rem;
+            border-radius: 12px;
+            font-size: 1.05rem;
             transition: all 0.3s ease;
             background: white;
             font-family: 'Inter', sans-serif;
@@ -137,15 +130,15 @@
         .form-group input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
         .input-icon {
             position: absolute;
             right: 18px;
-            top: 50px;
+            top: 45px;
             color: var(--gray);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
         .login-btn {
@@ -154,36 +147,36 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border: none;
-            border-radius: 14px;
-            font-size: 1.15rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
             margin-top: 10px;
         }
 
         .login-btn:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: var(--hover-shadow);
         }
 
         .demo-credentials {
             background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            padding: 22px;
-            border-radius: 16px;
+            padding: 20px;
+            border-radius: 12px;
             margin-top: 25px;
-            border-left: 5px solid var(--primary);
+            border-left: 4px solid var(--primary);
         }
 
         .demo-credentials h4 {
             color: var(--dark);
             margin-bottom: 12px;
-            font-size: 1.05rem;
+            font-size: 1rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .demo-credentials p {
@@ -192,23 +185,20 @@
             margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .credential-badge {
             background: var(--primary);
             color: white;
-            padding: 6px 14px;
-            border-radius: 24px;
+            padding: 5px 12px;
+            border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 600;
         }
 
         .dashboard-section {
             display: none;
-            flex: 1;
-            flex-direction: column;
-            justify-content: space-between;
         }
 
         .user-welcome {
@@ -219,32 +209,30 @@
             font-weight: 600;
             display: inline-block;
             margin-bottom: 30px;
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
             font-size: 1.2rem;
         }
 
         .ip-input-section {
             background: linear-gradient(135deg, #f8fafc, #f1f5f9);
             padding: 30px;
-            border-radius: 20px;
+            border-radius: 16px;
             margin-bottom: 30px;
             border: 2px dashed var(--gray-light);
-            flex: 1;
         }
 
         .ip-input-group {
             display: flex;
             gap: 15px;
             align-items: center;
-            margin-bottom: 20px;
         }
 
         .ip-input-group input {
             flex: 1;
-            padding: 18px 22px;
+            padding: 16px 20px;
             border: 2px solid var(--gray-light);
-            border-radius: 14px;
-            font-size: 1.1rem;
+            border-radius: 12px;
+            font-size: 1.05rem;
             transition: all 0.3s ease;
             background: white;
             font-family: 'Inter', sans-serif;
@@ -253,28 +241,28 @@
         .ip-input-group input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
         .upload-btn {
-            padding: 18px 30px;
+            padding: 16px 28px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border: none;
-            border-radius: 14px;
-            font-size: 1.1rem;
+            border-radius: 12px;
+            font-size: 1.05rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             font-family: 'Inter', sans-serif;
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
 
         .upload-btn:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: var(--hover-shadow);
         }
 
@@ -283,9 +271,9 @@
             padding: 30px;
             background: linear-gradient(135deg, #a78bfa, #ec4899);
             color: white;
-            border-radius: 20px;
+            border-radius: 16px;
             margin-bottom: 25px;
-            box-shadow: 0 12px 30px rgba(167, 139, 250, 0.4);
+            box-shadow: 0 10px 25px rgba(167, 139, 250, 0.3);
         }
 
         .counter-number {
@@ -296,7 +284,7 @@
         }
 
         .counter-label {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             opacity: 0.95;
         }
 
@@ -306,29 +294,29 @@
             background: linear-gradient(135deg, var(--danger), #b91c1c);
             color: white;
             border: none;
-            border-radius: 14px;
-            font-size: 1.1rem;
+            border-radius: 12px;
+            font-size: 1.05rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             font-family: 'Inter', sans-serif;
             margin-top: 20px;
-            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
         }
 
         .logout-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
         }
 
         .message {
             margin-top: 20px;
-            padding: 18px 24px;
-            border-radius: 14px;
+            padding: 18px 22px;
+            border-radius: 12px;
             text-align: center;
             font-weight: 600;
             display: none;
@@ -354,7 +342,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.7);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -362,7 +350,7 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(10px);
         }
 
         .verification-modal.active {
@@ -373,7 +361,7 @@
         .verification-content {
             background: white;
             padding: 45px;
-            border-radius: 24px;
+            border-radius: 20px;
             text-align: center;
             max-width: 500px;
             width: 90%;
@@ -393,7 +381,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
+            height: 4px;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
         }
 
@@ -406,15 +394,15 @@
         .verification-content h3 {
             color: var(--dark);
             margin-bottom: 18px;
-            font-size: 2rem;
+            font-size: 1.9rem;
             font-weight: 700;
         }
 
         .verification-content p {
             color: var(--gray);
             margin-bottom: 35px;
-            font-size: 1.2rem;
-            line-height: 1.6;
+            font-size: 1.15rem;
+            line-height: 1.5;
         }
 
         .verification-buttons {
@@ -426,8 +414,8 @@
         .btn {
             padding: 16px 28px;
             border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
+            border-radius: 10px;
+            font-size: 1.05rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -446,8 +434,8 @@
         }
 
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
         }
 
         .notification {
@@ -456,15 +444,15 @@
             left: 50%;
             transform: translateX(-50%) translateY(-100px);
             padding: 20px 30px;
-            border-radius: 14px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             z-index: 1001;
             display: none;
             min-width: 450px;
             text-align: center;
             box-shadow: var(--card-shadow);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(10px);
             border: 2px solid transparent;
             animation: slideDownNotification 0.4s ease forwards;
         }
@@ -487,33 +475,10 @@
             border-color: var(--warning);
         }
 
-        .instructions {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            padding: 20px;
-            border-radius: 14px;
-            margin-top: 25px;
-            border-left: 4px solid var(--warning);
-        }
-
-        .instructions h4 {
-            color: #92400e;
-            margin-bottom: 10px;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .instructions p {
-            color: #92400e;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(40px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -524,7 +489,7 @@
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(-15px);
             }
             to {
                 opacity: 1;
@@ -534,7 +499,7 @@
 
         @keyframes slideDownNotification {
             from {
-                transform: translateX(-50%) translateY(-120px);
+                transform: translateX(-50%) translateY(-100px);
                 opacity: 0;
             }
             to {
@@ -550,18 +515,18 @@
 
         @keyframes shake {
             0%, 100% {transform: translateX(0);}
-            10%, 30%, 50%, 70%, 90% {transform: translateX(-8px);}
-            20%, 40%, 60%, 80% {transform: translateX(8px);}
+            10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
+            20%, 40%, 60%, 80% {transform: translateX(5px);}
         }
 
         .shake {
-            animation: shake 0.6s ease-in-out;
+            animation: shake 0.5s ease-in-out;
         }
 
         @media (max-width: 768px) {
             .container {
-                padding: 35px 30px;
-                margin: 15px;
+                padding: 40px 30px;
+                margin: 20px;
                 width: 95%;
             }
             
@@ -584,16 +549,16 @@
             .notification {
                 min-width: 90%;
                 left: 5%;
-                transform: translateX(0) translateY(-120px);
+                transform: translateX(0) translateY(-100px);
             }
             
             .counter-number {
-                font-size: 3.2rem;
+                font-size: 3.5rem;
             }
             
             .logo {
-                width: 75px;
-                height: 75px;
+                width: 70px;
+                height: 70px;
             }
             
             .logo i {
@@ -603,7 +568,7 @@
 
         @media (max-width: 480px) {
             .container {
-                padding: 25px 20px;
+                padding: 30px 25px;
             }
             
             .header h1 {
@@ -611,11 +576,7 @@
             }
             
             .counter-number {
-                font-size: 2.8rem;
-            }
-            
-            .daily-counter {
-                padding: 25px;
+                font-size: 3rem;
             }
         }
     </style>
@@ -628,8 +589,8 @@
                 <div class="logo">
                     <i class="fas fa-shield-alt"></i>
                 </div>
-                <h1>IP Verification System</h1>
-                <p>Secure IP Management Platform</p>
+                <h1>IP Verification</h1>
+                <p>Secure IP Management System</p>
             </div>
 
             <div class="form-group">
@@ -652,7 +613,7 @@
                 <h4><i class="fas fa-key"></i> Pre-configured Access</h4>
                 <p><i class="fas fa-envelope"></i> <strong>Username:</strong> liveagent123@gmail.com</p>
                 <p><i class="fas fa-lock"></i> <strong>Password:</strong> blueston123</p>
-                <div style="margin-top: 12px;">
+                <div style="margin-top: 10px;">
                     <span class="credential-badge">2000+ Users Capacity</span>
                 </div>
             </div>
@@ -666,8 +627,8 @@
                 <div class="logo">
                     <i class="fas fa-shield-check"></i>
                 </div>
-                <h1>IP Management Dashboard</h1>
-                <p>Manage your IP addresses securely</p>
+                <h1>IP Dashboard</h1>
+                <p>Manage your IP addresses</p>
             </div>
 
             <div class="user-welcome" id="userWelcome">
@@ -678,16 +639,11 @@
                 <div class="ip-input-group">
                     <input type="text" id="ipAddress" placeholder="Paste IP address here (e.g., 192.168.1.1)" required>
                     <button class="upload-btn" onclick="uploadIP()">
-                        <i class="fas fa-cloud-upload-alt"></i> Upload IP
+                        <i class="fas fa-cloud-upload-alt"></i> Upload
                     </button>
                 </div>
-                <div style="text-align: center; margin-top: 15px;">
-                    <small style="color: var(--gray); font-size: 1rem;">Press Enter to upload IP</small>
-                </div>
-
-                <div class="instructions">
-                    <h4><i class="fas fa-info-circle"></i> Important Notice</h4>
-                    <p>All IP addresses are checked against the global database. If an IP has been uploaded by any user (including admin), it will be rejected as a duplicate to maintain data integrity.</p>
+                <div style="text-align: center; margin-top: 12px;">
+                    <small style="color: var(--gray);">Press Enter to upload IP</small>
                 </div>
             </div>
 
@@ -826,7 +782,7 @@
             if (!username || !password) {
                 showMessage('Please enter both username and password!', 'error');
                 loginBtn.classList.add('shake');
-                setTimeout(() => loginBtn.classList.remove('shake'), 600);
+                setTimeout(() => loginBtn.classList.remove('shake'), 500);
                 return;
             }
 
@@ -846,7 +802,7 @@
                 saveCurrentUser(user);
                 
                 document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('dashboardSection').style.display = 'flex';
+                document.getElementById('dashboardSection').style.display = 'block';
                 document.getElementById('userWelcome').innerHTML = `<i class="fas fa-user-check"></i> Welcome, ${user.name}`;
                 
                 showNotification(`Welcome back, ${user.name}!`, 'success');
@@ -854,7 +810,7 @@
             } else {
                 showMessage('Invalid username or password!', 'error');
                 loginBtn.classList.add('shake');
-                setTimeout(() => loginBtn.classList.remove('shake'), 600);
+                setTimeout(() => loginBtn.classList.remove('shake'), 500);
             }
         }
 
@@ -870,7 +826,7 @@
             localStorage.removeItem(CURRENT_USER_KEY);
             
             document.getElementById('dashboardSection').style.display = 'none';
-            document.getElementById('loginSection').style.display = 'flex';
+            document.getElementById('loginSection').style.display = 'block';
             
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
@@ -884,7 +840,7 @@
             if (user) {
                 currentUser = user;
                 document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('dashboardSection').style.display = 'flex';
+                document.getElementById('dashboardSection').style.display = 'block';
                 document.getElementById('userWelcome').innerHTML = `<i class="fas fa-user-check"></i> Welcome, ${user.name}`;
                 updateDailyCounter();
             }
@@ -942,7 +898,7 @@
             if (!ipAddress) {
                 showNotification('Please enter an IP address!', 'warning');
                 uploadBtn.classList.add('shake');
-                setTimeout(() => uploadBtn.classList.remove('shake'), 600);
+                setTimeout(() => uploadBtn.classList.remove('shake'), 500);
                 return;
             }
             
@@ -950,15 +906,15 @@
             if (!ipPattern.test(ipAddress)) {
                 showNotification('Please enter a valid IP address!', 'error');
                 uploadBtn.classList.add('shake');
-                setTimeout(() => uploadBtn.classList.remove('shake'), 600);
+                setTimeout(() => uploadBtn.classList.remove('shake'), 500);
                 return;
             }
             
-            // Check for duplicate IP across entire system (all users including admin)
+            // Check for duplicate IP across entire system
             if (isDuplicateIP(ipAddress)) {
-                showNotification('Duplicate IP detected! This IP already exists in the system.', 'error');
+                showNotification('Duplicate IP detected! This IP already exists in the system. Please use a different IP address.', 'error');
                 uploadBtn.classList.add('shake');
-                setTimeout(() => uploadBtn.classList.remove('shake'), 600);
+                setTimeout(() => uploadBtn.classList.remove('shake'), 500);
                 return;
             }
             
@@ -967,7 +923,7 @@
             if (dailyIPs.some(entry => entry.ip === ipAddress)) {
                 showNotification('IP already uploaded today!', 'error');
                 uploadBtn.classList.add('shake');
-                setTimeout(() => uploadBtn.classList.remove('shake'), 600);
+                setTimeout(() => uploadBtn.classList.remove('shake'), 500);
                 return;
             }
             
