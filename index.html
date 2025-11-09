@@ -202,12 +202,13 @@
         .user-welcome {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 50px;
             font-weight: 600;
             display: inline-block;
             margin-bottom: 25px;
             box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+            font-size: 1.1rem;
         }
 
         .ip-input-section {
@@ -471,6 +472,35 @@
             border-color: var(--warning);
         }
 
+        .user-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border-left: 4px solid var(--primary);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
         @keyframes slideUp {
             from {
                 opacity: 0;
@@ -550,6 +580,10 @@
             .counter-number {
                 font-size: 3rem;
             }
+            
+            .user-stats {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -603,6 +637,17 @@
 
             <div class="user-welcome" id="userWelcome">
                 <i class="fas fa-user-check"></i> Welcome, User
+            </div>
+
+            <div class="user-stats">
+                <div class="stat-card">
+                    <span class="stat-number" id="userTotalIPs">0</span>
+                    <span class="stat-label">Total IPs Uploaded</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="userTodayIPs">0</span>
+                    <span class="stat-label">Today's IPs</span>
+                </div>
             </div>
 
             <div class="ip-input-section">
@@ -776,7 +821,7 @@
                 document.getElementById('userWelcome').innerHTML = `<i class="fas fa-user-check"></i> Welcome, ${user.name}`;
                 
                 showNotification(`Welcome back, ${user.name}!`, 'success');
-                updateDailyCounter();
+                updateDashboardStats();
             } else {
                 showMessage('Invalid username or password!', 'error');
                 loginBtn.classList.add('shake');
@@ -812,8 +857,20 @@
                 document.getElementById('loginSection').style.display = 'none';
                 document.getElementById('dashboardSection').style.display = 'block';
                 document.getElementById('userWelcome').innerHTML = `<i class="fas fa-user-check"></i> Welcome, ${user.name}`;
-                updateDailyCounter();
+                updateDashboardStats();
             }
+        }
+
+        // Dashboard stats
+        function updateDashboardStats() {
+            const allIPs = getAllStoredIPs();
+            const userIPs = allIPs.filter(ip => ip.userId === currentUser.id);
+            const today = new Date().toDateString();
+            const todayIPs = userIPs.filter(ip => new Date(ip.timestamp).toDateString() === today);
+            
+            document.getElementById('userTotalIPs').textContent = userIPs.length;
+            document.getElementById('userTodayIPs').textContent = todayIPs.length;
+            updateDailyCounter();
         }
 
         // Daily IP counter
@@ -880,9 +937,9 @@
                 return;
             }
             
-            // Check for duplicate IP
+            // Check for duplicate IP across entire system
             if (isDuplicateIP(ipAddress)) {
-                showNotification('Duplicate IP detected! Use different IP.', 'error');
+                showNotification('Duplicate IP detected! This IP already exists in the system.', 'error');
                 uploadBtn.classList.add('shake');
                 setTimeout(() => uploadBtn.classList.remove('shake'), 500);
                 return;
@@ -935,7 +992,7 @@
                 saveAllIPs(allIPs);
                 
                 showNotification(`IP ${currentIP} uploaded successfully!`, 'success');
-                updateDailyCounter();
+                updateDashboardStats();
             } else {
                 showNotification(`IP ${currentIP} verification failed.`, 'error');
             }
