@@ -918,7 +918,7 @@
                     <ul>
                         <li>Enter one IP address per line</li>
                         <li>Maximum 2000 IPs in one upload</li>
-                        <li>Duplicate IPs will be automatically detected</li>
+                        <li>Duplicate IPs will be automatically detected and skipped</li>
                         <li>Invalid IP formats will be skipped</li>
                         <li>All IPs are stored in the same database for duplicate checking</li>
                     </ul>
@@ -1210,7 +1210,7 @@
             });
         }
 
-        // BULK IP UPLOAD FUNCTIONALITY
+        // FIXED BULK IP UPLOAD FUNCTIONALITY
         function uploadBulkIPs() {
             const bulkText = document.getElementById('bulkIPs').value.trim();
             const selectedUser = document.getElementById('bulkUser').value;
@@ -1240,6 +1240,7 @@
 
             const ipPattern = /^(\d{1,3}\.){3}\d{1,3}$/;
 
+            // First process all IPs to identify duplicates
             ipLines.forEach((ip, index) => {
                 const cleanIP = ip.trim();
                 
@@ -1263,16 +1264,7 @@
                     return;
                 }
 
-                // Add new IP
-                allIPs.push({
-                    ip: cleanIP,
-                    timestamp: new Date().toISOString(),
-                    userId: selectedUser,
-                    userName: selectedUser === 'admin' ? 'Administrator' : 'Live Agent',
-                    type: ipType
-                });
-
-                existingIPs.add(cleanIP);
+                // Mark for success (will be added later)
                 results.push({
                     ip: cleanIP,
                     status: 'success',
@@ -1281,8 +1273,24 @@
                 successCount++;
             });
 
-            // Save all IPs
-            saveAllIPs(allIPs);
+            // Now actually add the successful IPs to storage
+            results.forEach((result, index) => {
+                if (result.status === 'success') {
+                    allIPs.push({
+                        ip: result.ip,
+                        timestamp: new Date().toISOString(),
+                        userId: selectedUser,
+                        userName: selectedUser === 'admin' ? 'Administrator' : 'Live Agent',
+                        type: ipType
+                    });
+                    existingIPs.add(result.ip); // Add to existing set to prevent duplicates in same batch
+                }
+            });
+
+            // Save all IPs only once
+            if (successCount > 0) {
+                saveAllIPs(allIPs);
+            }
 
             // Show results
             showUploadResults(results);
