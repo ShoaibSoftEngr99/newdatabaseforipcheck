@@ -314,6 +314,108 @@
             border: 2px solid var(--danger);
         }
 
+        .verification-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .verification-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .verification-content {
+            background: white;
+            padding: 45px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--card-shadow);
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .verification-modal.active .verification-content {
+            transform: scale(1);
+        }
+
+        .verification-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .verification-icon {
+            font-size: 4.5rem;
+            color: var(--success);
+            margin-bottom: 25px;
+        }
+
+        .verification-content h3 {
+            color: var(--dark);
+            margin-bottom: 18px;
+            font-size: 1.9rem;
+            font-weight: 700;
+        }
+
+        .verification-content p {
+            color: var(--gray);
+            margin-bottom: 35px;
+            font-size: 1.15rem;
+            line-height: 1.5;
+        }
+
+        .verification-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 16px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #047857);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #b91c1c);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
         .notification {
             position: fixed;
             top: 25px;
@@ -384,6 +486,11 @@
             }
         }
 
+        @keyframes countUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
         @keyframes shake {
             0%, 100% {transform: translateX(0);}
             10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
@@ -411,6 +518,10 @@
             
             .ip-input-group input {
                 width: 100%;
+            }
+            
+            .verification-buttons {
+                flex-direction: column;
             }
             
             .notification {
@@ -514,6 +625,25 @@
         </div>
     </div>
 
+    <!-- Verification Modal -->
+    <div class="verification-modal" id="verificationModal">
+        <div class="verification-content">
+            <div class="verification-icon">
+                <i class="fas fa-link"></i>
+            </div>
+            <h3>Verify IP Link</h3>
+            <p>Is the IP address accessible and the link working properly?</p>
+            <div class="verification-buttons">
+                <button class="btn btn-success" onclick="confirmLink(true)">
+                    <i class="fas fa-check"></i> Yes, Working
+                </button>
+                <button class="btn btn-danger" onclick="confirmLink(false)">
+                    <i class="fas fa-times"></i> Not Working
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Global Notification -->
     <div id="globalNotification" class="notification"></div>
 
@@ -532,6 +662,7 @@
             created: new Date().toISOString()
         };
 
+        let currentIP = '';
         let currentUser = null;
 
         // Storage functions
@@ -718,19 +849,40 @@
                 return;
             }
             
-            // Save to global storage
-            const allIPs = getAllStoredIPs();
-            allIPs.push({
-                ip: ipAddress,
-                timestamp: new Date().toISOString(),
-                userId: currentUser.id,
-                userName: currentUser.name,
-                type: 'user_upload'
-            });
-            saveAllIPs(allIPs);
+            currentIP = ipAddress;
+            showVerificationModal();
+        }
+        
+        function showVerificationModal() {
+            const modal = document.getElementById('verificationModal');
+            modal.classList.add('active');
+        }
+        
+        function hideVerificationModal() {
+            const modal = document.getElementById('verificationModal');
+            modal.classList.remove('active');
+        }
+        
+        function confirmLink(isWorking) {
+            if (isWorking) {
+                // Save to global storage
+                const allIPs = getAllStoredIPs();
+                allIPs.push({
+                    ip: currentIP,
+                    timestamp: new Date().toISOString(),
+                    userId: currentUser.id,
+                    userName: currentUser.name,
+                    type: 'user_upload'
+                });
+                saveAllIPs(allIPs);
+                
+                showNotification(`IP ${currentIP} uploaded successfully!`, 'success');
+            } else {
+                showNotification(`IP ${currentIP} verification failed.`, 'error');
+            }
             
-            showNotification(`IP ${ipAddress} uploaded successfully!`, 'success');
             document.getElementById('ipAddress').value = '';
+            hideVerificationModal();
         }
 
         // Enter key support
@@ -743,6 +895,13 @@
         document.getElementById('ipAddress').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 uploadIP();
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('verificationModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideVerificationModal();
             }
         });
 
