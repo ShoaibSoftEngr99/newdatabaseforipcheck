@@ -843,7 +843,7 @@
             
             // FIRST: Check for duplicate IP across entire system
             if (isDuplicateIP(ipAddress)) {
-                showNotification('Duplicate IP detected! This IP already exists in the system. Please use a different IP address.', 'error');
+                showNotification('Duplicate IP detected! This IP already exists.', 'error');
                 uploadBtn.classList.add('shake');
                 setTimeout(() => uploadBtn.classList.remove('shake'), 500);
                 return;
@@ -922,3 +922,4 @@
     </script>
 </body>
 </html>
+
