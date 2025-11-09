@@ -665,7 +665,7 @@
         let currentIP = '';
         let currentUser = null;
 
-        // Storage functions with real-time sync simulation
+        // Storage functions
         function getCloudData(key) {
             try {
                 const stored = localStorage.getItem(key);
@@ -678,27 +678,10 @@
         function saveCloudData(key, data) {
             try {
                 localStorage.setItem(key, JSON.stringify(data));
-                // Simulate real-time sync across multiple users
-                if (key === IP_STORAGE_KEY) {
-                    syncWithOtherUsers();
-                }
                 return true;
             } catch (e) {
                 return false;
             }
-        }
-
-        // Simulate real-time synchronization across multiple users
-        function syncWithOtherUsers() {
-            // In a real system, this would be a WebSocket or API call
-            // For demo purposes, we'll just update the timestamp
-            const syncEvent = new CustomEvent('storageSync', {
-                detail: { 
-                    timestamp: new Date().toISOString(),
-                    source: 'user_upload'
-                }
-            });
-            window.dispatchEvent(syncEvent);
         }
 
         function getDefaultUsers() {
@@ -916,12 +899,6 @@
             document.getElementById('ipAddress').value = '';
             hideVerificationModal();
         }
-
-        // Listen for storage sync events (simulating real-time updates)
-        window.addEventListener('storageSync', function(event) {
-            console.log('Storage sync event received:', event.detail);
-            // In a real application, you would refresh the IP list here
-        });
 
         // Enter key support
         document.getElementById('password').addEventListener('keypress', function(e) {
