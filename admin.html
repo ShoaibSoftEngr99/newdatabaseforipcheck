@@ -33,15 +33,15 @@
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
         }
 
         .login-container {
-            max-width: 440px;
-            margin: 50px auto;
+            max-width: 500px;
+            margin: 80px auto;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
-            padding: 50px 40px;
+            padding: 60px 50px;
             border-radius: 20px;
             box-shadow: var(--card-shadow);
             display: block;
@@ -63,15 +63,15 @@
 
         .login-header {
             text-align: center;
-            margin-bottom: 45px;
+            margin-bottom: 50px;
         }
 
         .admin-logo {
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 18px;
-            margin: 0 auto 20px;
+            border-radius: 20px;
+            margin: 0 auto 25px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -79,14 +79,14 @@
         }
 
         .admin-logo i {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             color: white;
         }
 
         .login-header h1 {
             color: var(--dark);
-            font-size: 2rem;
-            margin-bottom: 8px;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
             font-weight: 700;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
@@ -95,28 +95,28 @@
 
         .login-header p {
             color: var(--gray);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             position: relative;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
             color: var(--dark);
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
 
         .form-group input {
             width: 100%;
-            padding: 15px 45px 15px 15px;
+            padding: 16px 50px 16px 18px;
             border: 2px solid var(--gray-light);
             border-radius: 12px;
-            font-size: 1rem;
+            font-size: 1.05rem;
             transition: all 0.3s ease;
             background: white;
             font-family: 'Inter', sans-serif;
@@ -130,19 +130,20 @@
 
         .input-icon {
             position: absolute;
-            right: 15px;
-            top: 42px;
+            right: 18px;
+            top: 45px;
             color: var(--gray);
+            font-size: 1.1rem;
         }
 
         .login-btn {
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -156,7 +157,7 @@
         }
 
         .admin-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
@@ -166,6 +167,7 @@
             display: none;
             border: 1px solid rgba(255, 255, 255, 0.3);
             animation: slideUp 0.6s ease;
+            min-height: 95vh;
         }
 
         .admin-container::before {
@@ -181,30 +183,30 @@
         .admin-header {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            padding: 30px 35px;
+            padding: 35px 40px;
             text-align: center;
             position: relative;
         }
 
         .admin-header h1 {
-            font-size: 2.4rem;
-            margin-bottom: 8px;
+            font-size: 2.6rem;
+            margin-bottom: 10px;
             font-weight: 700;
         }
 
         .admin-header p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             opacity: 0.9;
         }
 
         .logout-btn {
             position: absolute;
-            top: 25px;
-            right: 25px;
+            top: 30px;
+            right: 30px;
             background: rgba(255, 255, 255, 0.2);
             color: white;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
@@ -214,6 +216,7 @@
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
             backdrop-filter: blur(10px);
+            font-size: 1.05rem;
         }
 
         .logout-btn:hover {
@@ -223,7 +226,7 @@
 
         .admin-nav {
             background: var(--light);
-            padding: 0 35px;
+            padding: 0 40px;
             border-bottom: 1px solid var(--gray-light);
         }
 
@@ -235,12 +238,13 @@
         }
 
         .nav-tab {
-            padding: 20px 25px;
+            padding: 22px 28px;
             cursor: pointer;
             border-bottom: 3px solid transparent;
             transition: all 0.3s ease;
             font-weight: 600;
             color: var(--dark);
+            font-size: 1.05rem;
         }
 
         .nav-tab.active {
@@ -256,8 +260,9 @@
 
         .tab-content {
             display: none;
-            padding: 35px;
+            padding: 40px;
             animation: fadeIn 0.5s ease;
+            min-height: 500px;
         }
 
         .tab-content.active {
@@ -266,17 +271,17 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 30px;
             background: var(--light);
             border-radius: 16px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .stat-card {
             background: white;
-            padding: 25px;
+            padding: 30px;
             border-radius: 14px;
             text-align: center;
             box-shadow: var(--card-shadow);
@@ -290,51 +295,51 @@
         }
 
         .stat-icon {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
+            margin: 0 auto 20px;
             box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
         }
 
         .stat-icon i {
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: white;
         }
 
         .stat-number {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 800;
             color: var(--primary);
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             animation: countUp 0.8s ease-out;
         }
 
         .stat-label {
             color: var(--gray);
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 500;
         }
 
         .storage-info {
             background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            padding: 20px;
+            padding: 25px;
             border-radius: 14px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             border-left: 4px solid var(--primary);
         }
 
         .storage-bar {
             width: 100%;
-            height: 16px;
+            height: 18px;
             background: var(--gray-light);
             border-radius: 8px;
-            margin: 12px 0;
+            margin: 15px 0;
             overflow: hidden;
         }
 
@@ -347,18 +352,18 @@
 
         .data-section {
             background: white;
-            padding: 30px;
+            padding: 35px;
             border-radius: 16px;
             box-shadow: var(--card-shadow);
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .section-title {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             color: var(--dark);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             border-bottom: 2px solid var(--gray-light);
-            padding-bottom: 12px;
+            padding-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -367,14 +372,14 @@
 
         .section-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            margin-top: 20px;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: var(--card-shadow);
@@ -382,7 +387,7 @@
 
         .data-table th,
         .data-table td {
-            padding: 15px 18px;
+            padding: 18px 22px;
             text-align: left;
             border-bottom: 1px solid var(--gray-light);
         }
@@ -391,7 +396,7 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         .data-table tr:hover {
@@ -403,7 +408,7 @@
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -413,11 +418,12 @@
             align-items: center;
             gap: 6px;
             font-family: 'Inter', sans-serif;
+            font-size: 1rem;
         }
 
         .btn-sm {
-            padding: 8px 14px;
-            font-size: 0.9rem;
+            padding: 10px 18px;
+            font-size: 0.95rem;
         }
 
         .btn-primary {
@@ -462,23 +468,23 @@
 
         .bulk-actions {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
 
         .search-box {
-            max-width: 350px;
-            margin-bottom: 15px;
+            max-width: 400px;
+            margin-bottom: 20px;
             position: relative;
         }
 
         .search-box input {
             width: 100%;
-            padding: 12px 40px 12px 15px;
+            padding: 14px 45px 14px 18px;
             border: 2px solid var(--gray-light);
             border-radius: 10px;
-            font-size: 0.95rem;
+            font-size: 1rem;
             transition: all 0.3s ease;
             background: white;
             font-family: 'Inter', sans-serif;
@@ -492,63 +498,64 @@
 
         .search-icon {
             position: absolute;
-            right: 15px;
+            right: 18px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--gray);
+            font-size: 1.1rem;
         }
 
         .user-form {
             background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-            padding: 25px;
+            padding: 30px;
             border-radius: 14px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             border: 2px dashed var(--gray-light);
         }
 
         .form-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 20px;
         }
 
         .status-active {
             color: var(--success);
             font-weight: 600;
             background: #d1fae5;
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 15px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
         }
 
         .status-inactive {
             color: var(--danger);
             font-weight: 600;
             background: #fee2e2;
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 15px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
         }
 
         .bulk-upload-section {
             background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            padding: 25px;
+            padding: 30px;
             border-radius: 14px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             border: 2px dashed var(--primary);
         }
 
         .bulk-textarea {
             width: 100%;
-            height: 150px;
-            padding: 15px;
+            height: 180px;
+            padding: 18px;
             border: 2px solid var(--gray-light);
             border-radius: 10px;
             font-family: 'Inter', monospace;
-            font-size: 0.9rem;
+            font-size: 1rem;
             resize: vertical;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .bulk-textarea:focus {
@@ -559,40 +566,40 @@
 
         .bulk-info {
             background: white;
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
-            margin-top: 15px;
+            margin-top: 20px;
             border-left: 4px solid var(--info);
         }
 
         .bulk-info h4 {
             color: var(--dark);
-            margin-bottom: 8px;
-            font-size: 0.95rem;
+            margin-bottom: 10px;
+            font-size: 1rem;
         }
 
         .bulk-info ul {
             color: var(--gray);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             padding-left: 20px;
         }
 
         .bulk-info li {
-            margin-bottom: 4px;
+            margin-bottom: 5px;
         }
 
         .notification {
             position: fixed;
-            top: 20px;
+            top: 25px;
             left: 50%;
             transform: translateX(-50%) translateY(-100px);
-            padding: 15px 25px;
-            border-radius: 10px;
+            padding: 20px 30px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             z-index: 1001;
             display: none;
-            min-width: 400px;
+            min-width: 450px;
             text-align: center;
             box-shadow: var(--card-shadow);
             backdrop-filter: blur(10px);
@@ -666,9 +673,15 @@
             animation: shake 0.5s ease-in-out;
         }
 
+        @media (max-width: 1200px) {
+            .admin-container {
+                margin: 20px;
+            }
+        }
+
         @media (max-width: 768px) {
             .admin-container {
-                margin: 10px;
+                margin: 15px;
             }
             
             .admin-header {
@@ -676,7 +689,7 @@
             }
             
             .admin-header h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             
             .nav-tabs {
@@ -684,7 +697,7 @@
             }
             
             .nav-tab {
-                padding: 15px 20px;
+                padding: 18px 22px;
                 border-bottom: 1px solid var(--gray-light);
                 border-left: 4px solid transparent;
             }
@@ -704,12 +717,12 @@
             }
             
             .data-section {
-                padding: 20px;
+                padding: 25px 20px;
             }
             
             .section-title {
                 flex-direction: column;
-                gap: 12px;
+                gap: 15px;
                 align-items: flex-start;
             }
             
@@ -725,6 +738,25 @@
                 min-width: 90%;
                 left: 5%;
                 transform: translateX(0) translateY(-100px);
+            }
+            
+            .login-container {
+                margin: 40px 20px;
+                padding: 40px 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 25px;
+            }
+            
+            .admin-header h1 {
+                font-size: 2rem;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
             }
         }
     </style>
@@ -853,14 +885,14 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Upload as User</label>
-                        <select id="bulkUser" style="width: 100%; padding: 12px; border: 2px solid var(--gray-light); border-radius: 8px;">
+                        <select id="bulkUser" style="width: 100%; padding: 14px; border: 2px solid var(--gray-light); border-radius: 8px;">
                             <option value="admin">Admin</option>
                             <option value="liveagent">Live Agent</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>IP Type</label>
-                        <select id="bulkType" style="width: 100%; padding: 12px; border: 2px solid var(--gray-light); border-radius: 8px;">
+                        <select id="bulkType" style="width: 100%; padding: 14px; border: 2px solid var(--gray-light); border-radius: 8px;">
                             <option value="admin_upload">Admin Upload</option>
                             <option value="bulk_upload">Bulk Upload</option>
                         </select>
