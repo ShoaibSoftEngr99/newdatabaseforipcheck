@@ -841,7 +841,7 @@
                 return;
             }
             
-            // Check for duplicate IP across entire system
+            // FIRST: Check for duplicate IP across entire system
             if (isDuplicateIP(ipAddress)) {
                 showNotification('Duplicate IP detected! This IP already exists in the system. Please use a different IP address.', 'error');
                 uploadBtn.classList.add('shake');
@@ -849,6 +849,7 @@
                 return;
             }
             
+            // If no duplicate, show verification modal
             currentIP = ipAddress;
             showVerificationModal();
         }
