@@ -39,17 +39,20 @@
         }
 
         .container {
-            max-width: 480px;
-            width: 100%;
+            max-width: 800px;
+            width: 95%;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
-            padding: 40px 35px;
-            border-radius: 20px;
+            padding: 50px 45px;
+            border-radius: 24px;
             box-shadow: var(--card-shadow);
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.3);
             animation: slideUp 0.6s ease;
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .container::before {
@@ -58,36 +61,36 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
+            height: 5px;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
         }
 
         .header {
             text-align: center;
-            margin-bottom: 35px;
+            margin-bottom: 45px;
         }
 
         .logo {
-            width: 70px;
-            height: 70px;
+            width: 85px;
+            height: 85px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 18px;
-            margin: 0 auto 20px;
+            border-radius: 22px;
+            margin: 0 auto 25px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
         }
 
         .logo i {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             color: white;
         }
 
         .header h1 {
             color: var(--dark);
-            font-size: 2rem;
-            margin-bottom: 8px;
+            font-size: 2.4rem;
+            margin-bottom: 12px;
             font-weight: 700;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
@@ -96,32 +99,36 @@
 
         .header p {
             color: var(--gray);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
         .login-section {
             margin-bottom: 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             position: relative;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
             color: var(--dark);
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
 
         .form-group input {
             width: 100%;
-            padding: 15px 45px 15px 15px;
+            padding: 18px 50px 18px 18px;
             border: 2px solid var(--gray-light);
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 14px;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
             background: white;
             font-family: 'Inter', sans-serif;
@@ -130,107 +137,114 @@
         .form-group input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
         }
 
         .input-icon {
             position: absolute;
-            right: 15px;
-            top: 42px;
+            right: 18px;
+            top: 50px;
             color: var(--gray);
+            font-size: 1.2rem;
         }
 
         .login-btn {
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 1.05rem;
+            border-radius: 14px;
+            font-size: 1.15rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            margin-top: 10px;
         }
 
         .login-btn:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             box-shadow: var(--hover-shadow);
         }
 
         .demo-credentials {
             background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            padding: 18px;
-            border-radius: 12px;
-            margin-top: 20px;
-            border-left: 4px solid var(--primary);
+            padding: 22px;
+            border-radius: 16px;
+            margin-top: 25px;
+            border-left: 5px solid var(--primary);
         }
 
         .demo-credentials h4 {
             color: var(--dark);
-            margin-bottom: 10px;
-            font-size: 0.95rem;
+            margin-bottom: 12px;
+            font-size: 1.05rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .demo-credentials p {
             color: var(--gray);
-            font-size: 0.9rem;
-            margin-bottom: 6px;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .credential-badge {
             background: var(--primary);
             color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 6px 14px;
+            border-radius: 24px;
+            font-size: 0.85rem;
             font-weight: 600;
         }
 
         .dashboard-section {
             display: none;
+            flex: 1;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .user-welcome {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            padding: 12px 24px;
+            padding: 15px 28px;
             border-radius: 50px;
             font-weight: 600;
             display: inline-block;
-            margin-bottom: 25px;
-            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
-            font-size: 1.1rem;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+            font-size: 1.2rem;
         }
 
         .ip-input-section {
             background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-            padding: 25px;
-            border-radius: 16px;
-            margin-bottom: 25px;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
             border: 2px dashed var(--gray-light);
+            flex: 1;
         }
 
         .ip-input-group {
             display: flex;
-            gap: 12px;
+            gap: 15px;
             align-items: center;
+            margin-bottom: 20px;
         }
 
         .ip-input-group input {
             flex: 1;
-            padding: 15px 18px;
+            padding: 18px 22px;
             border: 2px solid var(--gray-light);
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 14px;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
             background: white;
             font-family: 'Inter', sans-serif;
@@ -239,86 +253,87 @@
         .ip-input-group input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
         }
 
         .upload-btn {
-            padding: 15px 25px;
+            padding: 18px 30px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 14px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             font-family: 'Inter', sans-serif;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
         }
 
         .upload-btn:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             box-shadow: var(--hover-shadow);
         }
 
         .daily-counter {
             text-align: center;
-            padding: 25px;
+            padding: 30px;
             background: linear-gradient(135deg, #a78bfa, #ec4899);
             color: white;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 25px rgba(167, 139, 250, 0.3);
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 12px 30px rgba(167, 139, 250, 0.4);
         }
 
         .counter-number {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 800;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .counter-label {
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             opacity: 0.95;
         }
 
         .logout-btn {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             background: linear-gradient(135deg, var(--danger), #b91c1c);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 14px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             font-family: 'Inter', sans-serif;
-            margin-top: 15px;
-            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+            margin-top: 20px;
+            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
         }
 
         .logout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4);
         }
 
         .message {
-            margin-top: 15px;
-            padding: 15px 20px;
-            border-radius: 12px;
+            margin-top: 20px;
+            padding: 18px 24px;
+            border-radius: 14px;
             text-align: center;
             font-weight: 600;
             display: none;
             animation: slideIn 0.3s ease;
+            font-size: 1.05rem;
         }
 
         .message.success {
@@ -339,7 +354,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -347,7 +362,7 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
         }
 
         .verification-modal.active {
@@ -357,10 +372,10 @@
 
         .verification-content {
             background: white;
-            padding: 40px;
-            border-radius: 20px;
+            padding: 45px;
+            border-radius: 24px;
             text-align: center;
-            max-width: 450px;
+            max-width: 500px;
             width: 90%;
             box-shadow: var(--card-shadow);
             transform: scale(0.9);
@@ -378,41 +393,41 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
+            height: 5px;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
         }
 
         .verification-icon {
-            font-size: 4rem;
+            font-size: 4.5rem;
             color: var(--success);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .verification-content h3 {
             color: var(--dark);
-            margin-bottom: 15px;
-            font-size: 1.8rem;
+            margin-bottom: 18px;
+            font-size: 2rem;
             font-weight: 700;
         }
 
         .verification-content p {
             color: var(--gray);
-            margin-bottom: 30px;
-            font-size: 1.1rem;
-            line-height: 1.5;
+            margin-bottom: 35px;
+            font-size: 1.2rem;
+            line-height: 1.6;
         }
 
         .verification-buttons {
             display: flex;
-            gap: 12px;
+            gap: 15px;
             justify-content: center;
         }
 
         .btn {
-            padding: 14px 25px;
+            padding: 16px 28px;
             border: none;
-            border-radius: 10px;
-            font-size: 1rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -431,25 +446,25 @@
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
         }
 
         .notification {
             position: fixed;
-            top: 20px;
+            top: 25px;
             left: 50%;
             transform: translateX(-50%) translateY(-100px);
-            padding: 18px 25px;
-            border-radius: 12px;
+            padding: 20px 30px;
+            border-radius: 14px;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 1.1rem;
             z-index: 1001;
             display: none;
-            min-width: 400px;
+            min-width: 450px;
             text-align: center;
             box-shadow: var(--card-shadow);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             border: 2px solid transparent;
             animation: slideDownNotification 0.4s ease forwards;
         }
@@ -472,39 +487,33 @@
             border-color: var(--warning);
         }
 
-        .user-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .stat-card {
-            background: white;
+        .instructions {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
             padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: var(--card-shadow);
-            border-left: 4px solid var(--primary);
+            border-radius: 14px;
+            margin-top: 25px;
+            border-left: 4px solid var(--warning);
         }
 
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: block;
+        .instructions h4 {
+            color: #92400e;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .stat-label {
+        .instructions p {
+            color: #92400e;
             font-size: 0.9rem;
-            color: var(--gray);
-            margin-top: 5px;
+            line-height: 1.5;
         }
 
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -515,7 +524,7 @@
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(-15px);
+                transform: translateY(-20px);
             }
             to {
                 opacity: 1;
@@ -525,7 +534,7 @@
 
         @keyframes slideDownNotification {
             from {
-                transform: translateX(-50%) translateY(-100px);
+                transform: translateX(-50%) translateY(-120px);
                 opacity: 0;
             }
             to {
@@ -541,22 +550,23 @@
 
         @keyframes shake {
             0%, 100% {transform: translateX(0);}
-            10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
-            20%, 40%, 60%, 80% {transform: translateX(5px);}
+            10%, 30%, 50%, 70%, 90% {transform: translateX(-8px);}
+            20%, 40%, 60%, 80% {transform: translateX(8px);}
         }
 
         .shake {
-            animation: shake 0.5s ease-in-out;
+            animation: shake 0.6s ease-in-out;
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
             .container {
-                padding: 30px 25px;
+                padding: 35px 30px;
                 margin: 15px;
+                width: 95%;
             }
             
             .header h1 {
-                font-size: 1.8rem;
+                font-size: 2rem;
             }
             
             .ip-input-group {
@@ -574,15 +584,38 @@
             .notification {
                 min-width: 90%;
                 left: 5%;
-                transform: translateX(0) translateY(-100px);
+                transform: translateX(0) translateY(-120px);
             }
             
             .counter-number {
-                font-size: 3rem;
+                font-size: 3.2rem;
             }
             
-            .user-stats {
-                grid-template-columns: 1fr;
+            .logo {
+                width: 75px;
+                height: 75px;
+            }
+            
+            .logo i {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .counter-number {
+                font-size: 2.8rem;
+            }
+            
+            .daily-counter {
+                padding: 25px;
             }
         }
     </style>
@@ -595,18 +628,20 @@
                 <div class="logo">
                     <i class="fas fa-shield-alt"></i>
                 </div>
-                <h1>IP Verification</h1>
-                <p>Secure IP Management System</p>
+                <h1>IP Verification System</h1>
+                <p>Secure IP Management Platform</p>
             </div>
 
             <div class="form-group">
                 <label for="username"><i class="fas fa-user"></i> Username</label>
                 <input type="text" id="username" placeholder="Enter your username" required>
+                <i class="fas fa-user input-icon"></i>
             </div>
 
             <div class="form-group">
                 <label for="password"><i class="fas fa-lock"></i> Password</label>
                 <input type="password" id="password" placeholder="Enter your password" required>
+                <i class="fas fa-lock input-icon"></i>
             </div>
 
             <button class="login-btn" onclick="login()">
@@ -617,7 +652,7 @@
                 <h4><i class="fas fa-key"></i> Pre-configured Access</h4>
                 <p><i class="fas fa-envelope"></i> <strong>Username:</strong> liveagent123@gmail.com</p>
                 <p><i class="fas fa-lock"></i> <strong>Password:</strong> blueston123</p>
-                <div style="margin-top: 8px;">
+                <div style="margin-top: 12px;">
                     <span class="credential-badge">2000+ Users Capacity</span>
                 </div>
             </div>
@@ -631,34 +666,28 @@
                 <div class="logo">
                     <i class="fas fa-shield-check"></i>
                 </div>
-                <h1>IP Dashboard</h1>
-                <p>Manage your IP addresses</p>
+                <h1>IP Management Dashboard</h1>
+                <p>Manage your IP addresses securely</p>
             </div>
 
             <div class="user-welcome" id="userWelcome">
                 <i class="fas fa-user-check"></i> Welcome, User
             </div>
 
-            <div class="user-stats">
-                <div class="stat-card">
-                    <span class="stat-number" id="userTotalIPs">0</span>
-                    <span class="stat-label">Total IPs Uploaded</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="userTodayIPs">0</span>
-                    <span class="stat-label">Today's IPs</span>
-                </div>
-            </div>
-
             <div class="ip-input-section">
                 <div class="ip-input-group">
                     <input type="text" id="ipAddress" placeholder="Paste IP address here (e.g., 192.168.1.1)" required>
                     <button class="upload-btn" onclick="uploadIP()">
-                        <i class="fas fa-cloud-upload-alt"></i> Upload
+                        <i class="fas fa-cloud-upload-alt"></i> Upload IP
                     </button>
                 </div>
-                <div style="text-align: center; margin-top: 10px;">
-                    <small style="color: var(--gray);">Press Enter to upload IP</small>
+                <div style="text-align: center; margin-top: 15px;">
+                    <small style="color: var(--gray); font-size: 1rem;">Press Enter to upload IP</small>
+                </div>
+
+                <div class="instructions">
+                    <h4><i class="fas fa-info-circle"></i> Important Notice</h4>
+                    <p>All IP addresses are checked against the global database. If an IP has been uploaded by any user (including admin), it will be rejected as a duplicate to maintain data integrity.</p>
                 </div>
             </div>
 
@@ -797,7 +826,7 @@
             if (!username || !password) {
                 showMessage('Please enter both username and password!', 'error');
                 loginBtn.classList.add('shake');
-                setTimeout(() => loginBtn.classList.remove('shake'), 500);
+                setTimeout(() => loginBtn.classList.remove('shake'), 600);
                 return;
             }
 
@@ -817,15 +846,15 @@
                 saveCurrentUser(user);
                 
                 document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('dashboardSection').style.display = 'block';
+                document.getElementById('dashboardSection').style.display = 'flex';
                 document.getElementById('userWelcome').innerHTML = `<i class="fas fa-user-check"></i> Welcome, ${user.name}`;
                 
                 showNotification(`Welcome back, ${user.name}!`, 'success');
-                updateDashboardStats();
+                updateDailyCounter();
             } else {
                 showMessage('Invalid username or password!', 'error');
                 loginBtn.classList.add('shake');
-                setTimeout(() => loginBtn.classList.remove('shake'), 500);
+                setTimeout(() => loginBtn.classList.remove('shake'), 600);
             }
         }
 
@@ -841,7 +870,7 @@
             localStorage.removeItem(CURRENT_USER_KEY);
             
             document.getElementById('dashboardSection').style.display = 'none';
-            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('loginSection').style.display = 'flex';
             
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
@@ -855,22 +884,10 @@
             if (user) {
                 currentUser = user;
                 document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('dashboardSection').style.display = 'block';
+                document.getElementById('dashboardSection').style.display = 'flex';
                 document.getElementById('userWelcome').innerHTML = `<i class="fas fa-user-check"></i> Welcome, ${user.name}`;
-                updateDashboardStats();
+                updateDailyCounter();
             }
-        }
-
-        // Dashboard stats
-        function updateDashboardStats() {
-            const allIPs = getAllStoredIPs();
-            const userIPs = allIPs.filter(ip => ip.userId === currentUser.id);
-            const today = new Date().toDateString();
-            const todayIPs = userIPs.filter(ip => new Date(ip.timestamp).toDateString() === today);
-            
-            document.getElementById('userTotalIPs').textContent = userIPs.length;
-            document.getElementById('userTodayIPs').textContent = todayIPs.length;
-            updateDailyCounter();
         }
 
         // Daily IP counter
@@ -925,7 +942,7 @@
             if (!ipAddress) {
                 showNotification('Please enter an IP address!', 'warning');
                 uploadBtn.classList.add('shake');
-                setTimeout(() => uploadBtn.classList.remove('shake'), 500);
+                setTimeout(() => uploadBtn.classList.remove('shake'), 600);
                 return;
             }
             
@@ -933,15 +950,15 @@
             if (!ipPattern.test(ipAddress)) {
                 showNotification('Please enter a valid IP address!', 'error');
                 uploadBtn.classList.add('shake');
-                setTimeout(() => uploadBtn.classList.remove('shake'), 500);
+                setTimeout(() => uploadBtn.classList.remove('shake'), 600);
                 return;
             }
             
-            // Check for duplicate IP across entire system
+            // Check for duplicate IP across entire system (all users including admin)
             if (isDuplicateIP(ipAddress)) {
                 showNotification('Duplicate IP detected! This IP already exists in the system.', 'error');
                 uploadBtn.classList.add('shake');
-                setTimeout(() => uploadBtn.classList.remove('shake'), 500);
+                setTimeout(() => uploadBtn.classList.remove('shake'), 600);
                 return;
             }
             
@@ -950,7 +967,7 @@
             if (dailyIPs.some(entry => entry.ip === ipAddress)) {
                 showNotification('IP already uploaded today!', 'error');
                 uploadBtn.classList.add('shake');
-                setTimeout(() => uploadBtn.classList.remove('shake'), 500);
+                setTimeout(() => uploadBtn.classList.remove('shake'), 600);
                 return;
             }
             
@@ -992,7 +1009,7 @@
                 saveAllIPs(allIPs);
                 
                 showNotification(`IP ${currentIP} uploaded successfully!`, 'success');
-                updateDashboardStats();
+                updateDailyCounter();
             } else {
                 showNotification(`IP ${currentIP} verification failed.`, 'error');
             }
