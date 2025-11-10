@@ -686,7 +686,7 @@
             }
         }
 
-        // FIXED DUPLICATE CHECKING FUNCTION
+        // ✅ FIXED: STRONG DUPLICATE CHECKING FUNCTION
         function isDuplicateIP(ip) {
             try {
                 const allIPs = getAllStoredIPs();
@@ -708,7 +708,7 @@
             }
         }
 
-        // UPLOAD FUNCTION WITH FIXED DUPLICATE CHECKING
+        // ✅ FIXED: UPLOAD FUNCTION WITH PROPER DUPLICATE CHECKING
         function uploadIP() {
             if (!currentUser) {
                 showNotification('Please login first!', 'error');
@@ -736,7 +736,7 @@
                 return;
             }
             
-            // CHECK FOR DUPLICATE (FIXED)
+            // ✅ FIXED: CHECK FOR DUPLICATE ACROSS ALL USERS
             if (isDuplicateIP(ipAddress)) {
                 showNotification('❌ Duplicate IP! This IP already exists in system.', 'error');
                 uploadBtn.classList.add('shake');
@@ -785,6 +785,10 @@
             const defaultUsers = getDefaultUsers();
             const updatedUsers = { ...defaultUsers, ...users };
             saveUserAccounts(updatedUsers);
+            
+            // Debug: Show current IPs in console
+            console.log('🔄 User Panel Initialized');
+            console.log('📊 Current IPs in system:', getAllStoredIPs());
         }
 
         // Initialize
