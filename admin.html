@@ -1055,6 +1055,27 @@
             created: new Date().toISOString()
         };
 
+        // ENHANCED DUPLICATE CHECKING FUNCTION
+        function isDuplicateIP(ip) {
+            const allIPs = getAllStoredIPs();
+            console.log('=== ADMIN DUPLICATE CHECK ===');
+            console.log('Checking IP:', ip);
+            console.log('All stored IPs:', allIPs);
+            
+            // Check if IP exists in any format (case insensitive, trimmed)
+            const isDuplicate = allIPs.some(entry => {
+                const isMatch = entry.ip.trim() === ip.trim();
+                if (isMatch) {
+                    console.log('🚨 DUPLICATE FOUND:', entry);
+                }
+                return isMatch;
+            });
+            
+            console.log('Is duplicate?', isDuplicate);
+            console.log('=== END DUPLICATE CHECK ===');
+            return isDuplicate;
+        }
+
         // FIXED STORAGE FUNCTIONS - USE SAME SYSTEM AS USER PANEL
         function getCloudData(key) {
             try {
@@ -1219,7 +1240,7 @@
             });
         }
 
-        // FIXED BULK IP UPLOAD FUNCTIONALITY
+        // FIXED BULK IP UPLOAD FUNCTIONALITY WITH ENHANCED DUPLICATE DETECTION
         function uploadBulkIPs() {
             const bulkText = document.getElementById('bulkIPs').value.trim();
             const selectedUser = document.getElementById('bulkUser').value;
@@ -1241,7 +1262,6 @@
             }
 
             const allIPs = getAllStoredIPs();
-            const existingIPs = new Set(allIPs.map(ip => ip.ip));
             const results = [];
             let successCount = 0;
             let duplicateCount = 0;
@@ -1249,7 +1269,7 @@
 
             const ipPattern = /^(\d{1,3}\.){3}\d{1,3}$/;
 
-            // First process all IPs to identify duplicates
+            // Process all IPs with enhanced duplicate checking
             ipLines.forEach((ip, index) => {
                 const cleanIP = ip.trim();
                 
@@ -1263,7 +1283,8 @@
                     return;
                 }
 
-                if (existingIPs.has(cleanIP)) {
+                // Use the enhanced duplicate checking function
+                if (isDuplicateIP(cleanIP)) {
                     results.push({
                         ip: cleanIP,
                         status: 'duplicate',
@@ -1292,7 +1313,6 @@
                         userName: selectedUser === 'admin' ? 'Administrator' : 'Live Agent',
                         type: ipType
                     });
-                    existingIPs.add(result.ip); // Add to existing set to prevent duplicates in same batch
                 }
             });
 
