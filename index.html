@@ -648,7 +648,7 @@
     <div id="globalNotification" class="notification"></div>
 
     <script>
-        // Storage keys
+        // Storage keys - MUST MATCH ADMIN PANEL
         const IP_STORAGE_KEY = 'ip_system_ips';
         const USER_STORAGE_KEY = 'ip_system_users';
         const CURRENT_USER_KEY = 'ip_current_user';
@@ -665,13 +665,20 @@
         let currentIP = '';
         let currentUser = null;
 
-        // Storage functions
+        // FIXED STORAGE FUNCTIONS - USE SAME SYSTEM AS ADMIN
         function getCloudData(key) {
             try {
                 const stored = localStorage.getItem(key);
-                return stored ? JSON.parse(stored) : (key === USER_STORAGE_KEY ? getDefaultUsers() : []);
+                if (key === IP_STORAGE_KEY) {
+                    return stored ? JSON.parse(stored) : [];
+                } else if (key === USER_STORAGE_KEY) {
+                    return stored ? JSON.parse(stored) : getDefaultUsers();
+                }
+                return stored ? JSON.parse(stored) : [];
             } catch (e) {
-                return key === USER_STORAGE_KEY ? getDefaultUsers() : [];
+                if (key === IP_STORAGE_KEY) return [];
+                if (key === USER_STORAGE_KEY) return getDefaultUsers();
+                return [];
             }
         }
 
@@ -680,6 +687,7 @@
                 localStorage.setItem(key, JSON.stringify(data));
                 return true;
             } catch (e) {
+                console.error('Storage error:', e);
                 return false;
             }
         }
@@ -809,11 +817,25 @@
             }
         }
 
+        // FIXED DUPLICATE CHECKING FUNCTION
         function isDuplicateIP(ip) {
             const allIPs = getAllStoredIPs();
-            return allIPs.some(entry => entry.ip === ip);
+            console.log('Checking duplicate for IP:', ip);
+            console.log('All stored IPs:', allIPs);
+            
+            const isDuplicate = allIPs.some(entry => {
+                const isMatch = entry.ip === ip;
+                if (isMatch) {
+                    console.log('Duplicate found:', entry);
+                }
+                return isMatch;
+            });
+            
+            console.log('Is duplicate?', isDuplicate);
+            return isDuplicate;
         }
 
+        // FIXED UPLOAD FUNCTION
         function uploadIP() {
             if (!currentUser) {
                 showNotification('Please login first!', 'error');
@@ -841,7 +863,10 @@
                 return;
             }
             
-            // FIRST: Check for duplicate IP across entire system
+            // ENHANCED DUPLICATE CHECKING
+            console.log('=== USER PANEL UPLOAD CHECK ===');
+            console.log('Input IP:', ipAddress);
+            
             if (isDuplicateIP(ipAddress)) {
                 showNotification('Duplicate IP detected! This IP already exists in the system. Please use a different IP address.', 'error');
                 uploadBtn.classList.add('shake');
@@ -864,26 +889,45 @@
             modal.classList.remove('active');
         }
         
+        // FIXED CONFIRM LINK FUNCTION
         function confirmLink(isWorking) {
             if (isWorking) {
-                // Save to global storage
+                // Save to global storage (SAME AS ADMIN)
                 const allIPs = getAllStoredIPs();
-                allIPs.push({
+                const newIPEntry = {
                     ip: currentIP,
                     timestamp: new Date().toISOString(),
                     userId: currentUser.id,
                     userName: currentUser.name,
                     type: 'user_upload'
-                });
-                saveAllIPs(allIPs);
+                };
                 
-                showNotification(`IP ${currentIP} uploaded successfully!`, 'success');
+                allIPs.push(newIPEntry);
+                const saved = saveAllIPs(allIPs);
+                
+                if (saved) {
+                    console.log('IP saved successfully:', newIPEntry);
+                    console.log('Total IPs in system:', allIPs.length);
+                    showNotification(`IP ${currentIP} uploaded successfully!`, 'success');
+                } else {
+                    showNotification('Error saving IP! Please try again.', 'error');
+                }
             } else {
                 showNotification(`IP ${currentIP} verification failed.`, 'error');
             }
             
             document.getElementById('ipAddress').value = '';
             hideVerificationModal();
+        }
+
+        // ADD DEBUG FUNCTION TO CHECK STORAGE
+        function debugStorage() {
+            console.log('=== STORAGE DEBUG INFO ===');
+            console.log('IP Storage Key:', IP_STORAGE_KEY);
+            console.log('All IPs in system:', getAllStoredIPs());
+            console.log('Total IP count:', getAllStoredIPs().length);
+            console.log('Current user:', currentUser);
+            console.log('======================');
         }
 
         // Enter key support
