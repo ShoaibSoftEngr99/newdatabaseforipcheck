@@ -1055,7 +1055,7 @@
             created: new Date().toISOString()
         };
 
-        // SIMPLE DUPLICATE CHECKING FUNCTION
+        // GLOBAL DUPLICATE CHECKING FUNCTION - SAME FOR ALL PANELS
         function isDuplicateIP(ip) {
             const allIPs = getAllStoredIPs();
             return allIPs.some(entry => entry.ip.trim() === ip.trim());
@@ -1225,7 +1225,7 @@
             });
         }
 
-        // BULK IP UPLOAD WITH DUPLICATE DETECTION
+        // BULK IP UPLOAD WITH STRICT DUPLICATE DETECTION
         function uploadBulkIPs() {
             const bulkText = document.getElementById('bulkIPs').value.trim();
             const selectedUser = document.getElementById('bulkUser').value;
@@ -1254,7 +1254,7 @@
 
             const ipPattern = /^(\d{1,3}\.){3}\d{1,3}$/;
 
-            // Process all IPs with duplicate checking
+            // Process all IPs with STRICT duplicate checking
             ipLines.forEach((ip, index) => {
                 const cleanIP = ip.trim();
                 
@@ -1268,12 +1268,12 @@
                     return;
                 }
 
-                // Use the duplicate checking function
+                // STRICT DUPLICATE CHECKING - NO DUPLICATES ALLOWED
                 if (isDuplicateIP(cleanIP)) {
                     results.push({
                         ip: cleanIP,
                         status: 'duplicate',
-                        message: 'Duplicate IP - already exists in system'
+                        message: '❌ Duplicate IP - already exists in system'
                     });
                     duplicateCount++;
                     return;
@@ -1283,7 +1283,7 @@
                 results.push({
                     ip: cleanIP,
                     status: 'success',
-                    message: 'Uploaded successfully'
+                    message: '✅ Uploaded successfully'
                 });
                 successCount++;
             });
@@ -1310,10 +1310,13 @@
             showUploadResults(results);
             
             // Show summary notification
-            showNotification(
-                `Bulk upload completed! Success: ${successCount}, Duplicates: ${duplicateCount}, Invalid: ${invalidCount}`,
-                successCount > 0 ? 'success' : 'warning'
-            );
+            if (successCount > 0) {
+                showNotification(`✅ ${successCount} IPs uploaded successfully! ${duplicateCount} duplicates skipped.`, 'success');
+            } else if (duplicateCount > 0) {
+                showNotification(`❌ All IPs are duplicates! No new IPs uploaded.`, 'error');
+            } else {
+                showNotification(`⚠️ No valid IPs found to upload.`, 'warning');
+            }
 
             // Update dashboard
             loadAdminData();
@@ -1334,11 +1337,11 @@
                 
                 let statusBadge = '';
                 if (result.status === 'success') {
-                    statusBadge = '<span class="status-active">Success</span>';
+                    statusBadge = '<span class="status-active">✅ Success</span>';
                 } else if (result.status === 'duplicate') {
-                    statusBadge = '<span class="status-inactive">Duplicate</span>';
+                    statusBadge = '<span class="status-inactive">❌ Duplicate</span>';
                 } else {
-                    statusBadge = '<span style="color: var(--warning); font-weight: 600;">Invalid</span>';
+                    statusBadge = '<span style="color: var(--warning); font-weight: 600;">⚠️ Invalid</span>';
                 }
 
                 row.innerHTML = `
