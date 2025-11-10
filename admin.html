@@ -815,7 +815,7 @@
         <!-- Dashboard Tab -->
         <div id="dashboard-tab" class="tab-content active">
             <div class="storage-info">
-                <h3><i class="fas fa-database"></i> System Storage Overview</h3>
+                <h3><i class="fas fa-database"></i> Centralized Storage Overview</h3>
                 <div class="storage-bar">
                     <div class="storage-fill" id="storageFill"></div>
                 </div>
@@ -855,7 +855,7 @@
 
             <div class="data-section">
                 <h3 class="section-title">
-                    <span><i class="fas fa-history"></i> Recent Activity</span>
+                    <span><i class="fas fa-history"></i> Recent Activity (All Sources)</span>
                 </h3>
                 <table class="data-table">
                     <thead>
@@ -920,7 +920,7 @@
                         <li>Maximum 2000 IPs in one upload</li>
                         <li>Duplicate IPs will be automatically detected and skipped</li>
                         <li>Invalid IP formats will be skipped</li>
-                        <li>All IPs are stored in the same database for duplicate checking</li>
+                        <li>All IPs are stored in centralized storage for duplicate checking</li>
                     </ul>
                 </div>
             </div>
@@ -1000,7 +1000,7 @@
         <div id="ips-tab" class="tab-content">
             <div class="data-section">
                 <h3 class="section-title">
-                    <span><i class="fas fa-network-wired"></i> All IP Addresses</span>
+                    <span><i class="fas fa-network-wired"></i> All IP Addresses (Centralized Storage)</span>
                     <div class="bulk-actions">
                         <button class="btn btn-danger" onclick="clearAllIPs()">
                             <i class="fas fa-bomb"></i> Clear All IPs
@@ -1039,14 +1039,14 @@
     <div id="globalNotification" class="notification"></div>
 
     <script>
-        // ✅ FIXED: SAME STORAGE KEYS FOR BOTH PANELS
+        // ✅ CENTRALIZED STORAGE KEYS FOR BOTH PANELS
         const IP_STORAGE_KEY = 'ip_system_ips';
         const USER_STORAGE_KEY = 'ip_system_users';
         const ADMIN_PASSWORD = "admin123";
         const MAX_STORAGE_SIZE = 100000000;
         const MAX_BULK_UPLOAD = 2000;
 
-        // ✅ FIXED: SAME USER DATA FOR BOTH PANELS
+        // ✅ SAME USER DATA FOR BOTH PANELS
         const PRESET_USER = {
             id: 'liveagent',
             name: 'liveagent123@gmail.com',
@@ -1055,7 +1055,7 @@
             created: new Date().toISOString()
         };
 
-        // ✅ FIXED: STRONG DUPLICATE CHECKING FUNCTION (SAME AS USER PANEL)
+        // ✅ STRONG DUPLICATE CHECKING FUNCTION
         function isDuplicateIP(ip) {
             try {
                 const allIPs = getAllStoredIPs();
@@ -1068,7 +1068,7 @@
                 });
                 
                 console.log(`🔍 Admin Panel - Duplicate Check: "${ip}" -> ${duplicate ? '❌ DUPLICATE' : '✅ UNIQUE'}`);
-                console.log('All stored IPs:', allIPs.map(entry => entry.ip));
+                console.log('All stored IPs in centralized storage:', allIPs.map(entry => entry.ip));
                 
                 return duplicate;
             } catch (error) {
@@ -1077,7 +1077,7 @@
             }
         }
 
-        // ✅ FIXED: STORAGE FUNCTIONS (SAME AS USER PANEL)
+        // ✅ CENTRALIZED STORAGE FUNCTIONS
         function getCloudData(key) {
             try {
                 const stored = localStorage.getItem(key);
@@ -1236,14 +1236,14 @@
                 row.innerHTML = `
                     <td><strong>${entry.userName || entry.userId}</strong></td>
                     <td><code>${entry.ip}</code></td>
-                    <td><span class="status-active">${entry.type || 'user'}</span></td>
+                    <td><span class="status-active">${entry.source || 'admin_panel'}</span></td>
                     <td>${date.toLocaleString()}</td>
                 `;
                 recentTable.appendChild(row);
             });
         }
 
-        // ✅ FIXED: BULK UPLOAD WITH PROPER DUPLICATE CHECKING
+        // ✅ BULK UPLOAD WITH CENTRALIZED STORAGE
         function uploadBulkIPs() {
             const bulkText = document.getElementById('bulkIPs').value.trim();
             const selectedUser = document.getElementById('bulkUser').value;
@@ -1288,7 +1288,7 @@
                     return;
                 }
 
-                // ✅ STRONG DUPLICATE CHECKING (SAME AS USER PANEL)
+                // ✅ CHECK FOR DUPLICATE IN CENTRALIZED STORAGE
                 if (isDuplicateIP(cleanIP)) {
                     results.push({
                         ip: cleanIP,
@@ -1308,7 +1308,7 @@
                 successCount++;
             });
 
-            // Add successful IPs to storage
+            // Add successful IPs to CENTRALIZED STORAGE
             const newIPs = [];
             results.forEach((result, index) => {
                 if (result.status === 'success') {
@@ -1317,7 +1317,8 @@
                         timestamp: new Date().toISOString(),
                         userId: selectedUser,
                         userName: selectedUser === 'admin' ? 'Administrator' : 'Live Agent',
-                        type: ipType
+                        type: ipType,
+                        source: 'admin_panel'
                     };
                     allIPs.push(newIPEntry);
                     newIPs.push(newIPEntry);
@@ -1328,9 +1329,9 @@
             if (newIPs.length > 0) {
                 const saved = saveAllIPs(allIPs);
                 if (saved) {
-                    console.log('✅ Admin Panel - Saved', newIPs.length, 'new IPs to storage');
+                    console.log('✅ Admin Panel - Saved', newIPs.length, 'new IPs to centralized storage');
                 } else {
-                    console.error('❌ Admin Panel - Failed to save IPs to storage');
+                    console.error('❌ Admin Panel - Failed to save IPs to centralized storage');
                 }
             }
 
@@ -1339,7 +1340,7 @@
             
             // Show summary notification
             if (successCount > 0) {
-                showNotification(`✅ ${successCount} IPs uploaded successfully! ${duplicateCount} duplicates skipped.`, 'success');
+                showNotification(`✅ ${successCount} IPs uploaded successfully to centralized storage! ${duplicateCount} duplicates skipped.`, 'success');
             } else if (duplicateCount > 0) {
                 showNotification(`❌ All IPs are duplicates! No new IPs uploaded.`, 'error');
             } else {
@@ -1447,7 +1448,7 @@
                 row.innerHTML = `
                     <td><code>${entry.ip}</code></td>
                     <td><strong>${entry.userName || entry.userId}</strong></td>
-                    <td><span class="status-active">${entry.type || 'user'}</span></td>
+                    <td><span class="status-active">${entry.source || 'admin_panel'}</span></td>
                     <td>${date.toLocaleDateString()}</td>
                     <td>${date.toLocaleTimeString()}</td>
                     <td>
@@ -1531,16 +1532,16 @@
                 saveAllIPs(updatedIPs);
                 loadIPsData();
                 loadAdminData();
-                showNotification('IP address deleted!', 'success');
+                showNotification('IP address deleted from centralized storage!', 'success');
             }
         }
 
         function clearAllIPs() {
-            if (confirm('🚨 CRITICAL ACTION!\n\nDelete ALL IP records?\n\nThis cannot be undone!')) {
+            if (confirm('🚨 CRITICAL ACTION!\n\nDelete ALL IP records from centralized storage?\n\nThis cannot be undone!')) {
                 saveAllIPs([]);
                 loadIPsData();
                 loadAdminData();
-                showNotification('All IP records cleared!', 'success');
+                showNotification('All IP records cleared from centralized storage!', 'success');
             }
         }
 
@@ -1554,7 +1555,7 @@
             a.download = 'ip_list.txt';
             a.click();
             URL.revokeObjectURL(url);
-            showNotification('IP list exported successfully!', 'success');
+            showNotification('IP list exported successfully from centralized storage!', 'success');
         }
 
         // Search functionality
@@ -1568,7 +1569,7 @@
             }
         });
 
-        // ✅ FIXED: Initialize system properly
+        // ✅ Initialize system properly
         function initializeSystem() {
             const users = getUserAccounts();
             const defaultUsers = getDefaultUsers();
@@ -1578,7 +1579,7 @@
             saveUserAccounts(updatedUsers);
             
             console.log('🔄 Admin Panel Initialized');
-            console.log('📊 Current IPs in Admin Panel:', getAllStoredIPs());
+            console.log('📊 Current IPs in centralized storage:', getAllStoredIPs());
             console.log('👥 Current Users in system:', Object.keys(updatedUsers));
         }
 
