@@ -1039,13 +1039,14 @@
     <div id="globalNotification" class="notification"></div>
 
     <script>
-        const ADMIN_PASSWORD = "admin123";
+        // MAKE SURE THESE MATCH USER PANEL EXACTLY
         const IP_STORAGE_KEY = 'ip_system_ips';
         const USER_STORAGE_KEY = 'ip_system_users';
+        const ADMIN_PASSWORD = "admin123";
         const MAX_STORAGE_SIZE = 100000000;
         const MAX_BULK_UPLOAD = 2000;
 
-        // Pre-set user
+        // Pre-set user - SHOULD MATCH USER PANEL
         const PRESET_USER = {
             id: 'liveagent',
             name: 'liveagent123@gmail.com',
@@ -1054,13 +1055,20 @@
             created: new Date().toISOString()
         };
 
-        // Storage functions
+        // FIXED STORAGE FUNCTIONS - USE SAME SYSTEM AS USER PANEL
         function getCloudData(key) {
             try {
                 const stored = localStorage.getItem(key);
-                return stored ? JSON.parse(stored) : (key === USER_STORAGE_KEY ? getDefaultUsers() : []);
+                if (key === IP_STORAGE_KEY) {
+                    return stored ? JSON.parse(stored) : [];
+                } else if (key === USER_STORAGE_KEY) {
+                    return stored ? JSON.parse(stored) : getDefaultUsers();
+                }
+                return stored ? JSON.parse(stored) : [];
             } catch (e) {
-                return key === USER_STORAGE_KEY ? getDefaultUsers() : [];
+                if (key === IP_STORAGE_KEY) return [];
+                if (key === USER_STORAGE_KEY) return getDefaultUsers();
+                return [];
             }
         }
 
@@ -1069,6 +1077,7 @@
                 localStorage.setItem(key, JSON.stringify(data));
                 return true;
             } catch (e) {
+                console.error('Storage error:', e);
                 return false;
             }
         }
