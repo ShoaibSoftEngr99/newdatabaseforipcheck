@@ -14,12 +14,12 @@
         }
 
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary: #7c3aed;
-            --success: #059669;
-            --danger: #dc2626;
-            --warning: #d97706;
+            --primary: #2c5aa0;
+            --primary-dark: #1e3d72;
+            --secondary: #4a6fa5;
+            --success: #2e7d32;
+            --danger: #c62828;
+            --warning: #ef6c00;
             --light: #f8fafc;
             --dark: #1e293b;
             --gray: #64748b;
@@ -30,7 +30,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #1a2530 100%);
             min-height: 100vh;
             padding: 20px;
             display: flex;
@@ -76,7 +76,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 8px 20px rgba(44, 90, 160, 0.3);
         }
 
         .logo i {
@@ -130,7 +130,7 @@
         .form-group input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 4px rgba(44, 90, 160, 0.1);
         }
 
         .input-icon {
@@ -153,7 +153,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
             margin-top: 10px;
         }
 
@@ -209,7 +209,7 @@
             font-weight: 600;
             display: inline-block;
             margin-bottom: 30px;
-            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 6px 15px rgba(44, 90, 160, 0.3);
             font-size: 1.2rem;
         }
 
@@ -241,7 +241,7 @@
         .ip-input-group input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 4px rgba(44, 90, 160, 0.1);
         }
 
         .upload-btn {
@@ -258,7 +258,7 @@
             align-items: center;
             gap: 8px;
             font-family: 'Inter', sans-serif;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
         }
 
         .upload-btn:hover {
@@ -283,12 +283,12 @@
             gap: 8px;
             font-family: 'Inter', sans-serif;
             margin-top: 20px;
-            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+            box-shadow: 0 4px 12px rgba(198, 40, 40, 0.3);
         }
 
         .logout-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
+            box-shadow: 0 8px 20px rgba(198, 40, 40, 0.3);
         }
 
         .message {
@@ -686,13 +686,29 @@
             }
         }
 
-        // SIMPLE DUPLICATE CHECKING FUNCTION
+        // FIXED DUPLICATE CHECKING FUNCTION
         function isDuplicateIP(ip) {
-            const allIPs = getAllStoredIPs();
-            return allIPs.some(entry => entry.ip.trim() === ip.trim());
+            try {
+                const allIPs = getAllStoredIPs();
+                const cleanIP = ip.trim().toLowerCase();
+                
+                // Check if IP already exists (case insensitive, trimmed)
+                const duplicate = allIPs.some(entry => {
+                    const storedIP = entry.ip.trim().toLowerCase();
+                    return storedIP === cleanIP;
+                });
+                
+                console.log(`🔍 Duplicate Check: "${ip}" -> ${duplicate ? '❌ DUPLICATE' : '✅ UNIQUE'}`);
+                console.log('All stored IPs:', allIPs.map(ip => ip.ip));
+                
+                return duplicate;
+            } catch (error) {
+                console.error('Error in duplicate check:', error);
+                return false;
+            }
         }
 
-        // SIMPLE UPLOAD FUNCTION - DIRECT UPLOAD, NO VERIFICATION MODAL
+        // UPLOAD FUNCTION WITH FIXED DUPLICATE CHECKING
         function uploadIP() {
             if (!currentUser) {
                 showNotification('Please login first!', 'error');
@@ -720,7 +736,7 @@
                 return;
             }
             
-            // CHECK FOR DUPLICATE
+            // CHECK FOR DUPLICATE (FIXED)
             if (isDuplicateIP(ipAddress)) {
                 showNotification('❌ Duplicate IP! This IP already exists in system.', 'error');
                 uploadBtn.classList.add('shake');
