@@ -314,108 +314,6 @@
             border: 2px solid var(--danger);
         }
 
-        .verification-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .verification-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .verification-content {
-            background: white;
-            padding: 45px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: var(--card-shadow);
-            transform: scale(0.9);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .verification-modal.active .verification-content {
-            transform: scale(1);
-        }
-
-        .verification-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-
-        .verification-icon {
-            font-size: 4.5rem;
-            color: var(--success);
-            margin-bottom: 25px;
-        }
-
-        .verification-content h3 {
-            color: var(--dark);
-            margin-bottom: 18px;
-            font-size: 1.9rem;
-            font-weight: 700;
-        }
-
-        .verification-content p {
-            color: var(--gray);
-            margin-bottom: 35px;
-            font-size: 1.15rem;
-            line-height: 1.5;
-        }
-
-        .verification-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 16px 28px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            flex: 1;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--success), #047857);
-            color: white;
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, var(--danger), #b91c1c);
-            color: white;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-        }
-
         .notification {
             position: fixed;
             top: 25px;
@@ -486,11 +384,6 @@
             }
         }
 
-        @keyframes countUp {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
         @keyframes shake {
             0%, 100% {transform: translateX(0);}
             10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
@@ -518,10 +411,6 @@
             
             .ip-input-group input {
                 width: 100%;
-            }
-            
-            .verification-buttons {
-                flex-direction: column;
             }
             
             .notification {
@@ -609,7 +498,7 @@
                 <div class="ip-input-group">
                     <input type="text" id="ipAddress" placeholder="Paste IP address here (e.g., 192.168.1.1)" required>
                     <button class="upload-btn" onclick="uploadIP()">
-                        <i class="fas fa-cloud-upload-alt"></i> Upload
+                        <i class="fas fa-cloud-upload-alt"></i> Upload IP
                     </button>
                 </div>
                 <div style="text-align: center; margin-top: 12px;">
@@ -622,25 +511,6 @@
             </button>
 
             <div id="message" class="message"></div>
-        </div>
-    </div>
-
-    <!-- Verification Modal -->
-    <div class="verification-modal" id="verificationModal">
-        <div class="verification-content">
-            <div class="verification-icon">
-                <i class="fas fa-link"></i>
-            </div>
-            <h3>Verify IP Link</h3>
-            <p>Is the IP address accessible and the link working properly?</p>
-            <div class="verification-buttons">
-                <button class="btn btn-success" onclick="confirmLink(true)">
-                    <i class="fas fa-check"></i> Yes, Working
-                </button>
-                <button class="btn btn-danger" onclick="confirmLink(false)">
-                    <i class="fas fa-times"></i> Not Working
-                </button>
-            </div>
         </div>
     </div>
 
@@ -662,10 +532,9 @@
             created: new Date().toISOString()
         };
 
-        let currentIP = '';
         let currentUser = null;
 
-        // FIXED STORAGE FUNCTIONS - USE SAME SYSTEM AS ADMIN
+        // STORAGE FUNCTIONS
         function getCloudData(key) {
             try {
                 const stored = localStorage.getItem(key);
@@ -817,28 +686,13 @@
             }
         }
 
-        // ENHANCED DUPLICATE CHECKING FUNCTION
+        // SIMPLE DUPLICATE CHECKING FUNCTION
         function isDuplicateIP(ip) {
             const allIPs = getAllStoredIPs();
-            console.log('=== DUPLICATE CHECK ===');
-            console.log('Checking IP:', ip);
-            console.log('All stored IPs:', allIPs);
-            
-            // Check if IP exists in any format (case insensitive, trimmed)
-            const isDuplicate = allIPs.some(entry => {
-                const isMatch = entry.ip.trim() === ip.trim();
-                if (isMatch) {
-                    console.log('🚨 DUPLICATE FOUND:', entry);
-                }
-                return isMatch;
-            });
-            
-            console.log('Is duplicate?', isDuplicate);
-            console.log('=== END DUPLICATE CHECK ===');
-            return isDuplicate;
+            return allIPs.some(entry => entry.ip.trim() === ip.trim());
         }
 
-        // FIXED UPLOAD FUNCTION WITH PROPER DUPLICATE CHECKING
+        // SIMPLE UPLOAD FUNCTION - DIRECT UPLOAD, NO VERIFICATION MODAL
         function uploadIP() {
             if (!currentUser) {
                 showNotification('Please login first!', 'error');
@@ -866,70 +720,34 @@
                 return;
             }
             
-            // ENHANCED DUPLICATE CHECKING - CHECK BEFORE SHOWING MODAL
-            console.log('=== USER PANEL UPLOAD CHECK ===');
-            console.log('Input IP:', ipAddress);
-            
+            // CHECK FOR DUPLICATE
             if (isDuplicateIP(ipAddress)) {
-                showNotification('❌ Duplicate IP detected! This IP already exists in the system. Please use a different IP address.', 'error');
+                showNotification('❌ Duplicate IP! This IP already exists in system.', 'error');
                 uploadBtn.classList.add('shake');
                 setTimeout(() => uploadBtn.classList.remove('shake'), 500);
                 document.getElementById('ipAddress').value = '';
                 return;
             }
             
-            // If no duplicate, show verification modal
-            currentIP = ipAddress;
-            showVerificationModal();
-        }
-        
-        function showVerificationModal() {
-            const modal = document.getElementById('verificationModal');
-            modal.classList.add('active');
-        }
-        
-        function hideVerificationModal() {
-            const modal = document.getElementById('verificationModal');
-            modal.classList.remove('active');
-        }
-        
-        // FIXED CONFIRM LINK FUNCTION WITH FINAL DUPLICATE CHECK
-        function confirmLink(isWorking) {
-            if (isWorking) {
-                // FINAL DUPLICATE CHECK BEFORE SAVING
-                if (isDuplicateIP(currentIP)) {
-                    showNotification('❌ This IP was just added by another user! Please use a different IP address.', 'error');
-                    hideVerificationModal();
-                    document.getElementById('ipAddress').value = '';
-                    return;
-                }
-                
-                // Save to global storage (SAME AS ADMIN)
-                const allIPs = getAllStoredIPs();
-                const newIPEntry = {
-                    ip: currentIP,
-                    timestamp: new Date().toISOString(),
-                    userId: currentUser.id,
-                    userName: currentUser.name,
-                    type: 'user_upload'
-                };
-                
-                allIPs.push(newIPEntry);
-                const saved = saveAllIPs(allIPs);
-                
-                if (saved) {
-                    console.log('✅ IP saved successfully:', newIPEntry);
-                    console.log('📊 Total IPs in system:', allIPs.length);
-                    showNotification(`✅ IP ${currentIP} uploaded successfully!`, 'success');
-                } else {
-                    showNotification('❌ Error saving IP! Please try again.', 'error');
-                }
-            } else {
-                showNotification(`❌ IP ${currentIP} verification failed.`, 'error');
-            }
+            // IF NOT DUPLICATE, UPLOAD DIRECTLY
+            const allIPs = getAllStoredIPs();
+            const newIPEntry = {
+                ip: ipAddress,
+                timestamp: new Date().toISOString(),
+                userId: currentUser.id,
+                userName: currentUser.name,
+                type: 'user_upload'
+            };
             
-            document.getElementById('ipAddress').value = '';
-            hideVerificationModal();
+            allIPs.push(newIPEntry);
+            const saved = saveAllIPs(allIPs);
+            
+            if (saved) {
+                showNotification(`✅ IP ${ipAddress} uploaded successfully!`, 'success');
+                document.getElementById('ipAddress').value = '';
+            } else {
+                showNotification('❌ Error saving IP! Please try again.', 'error');
+            }
         }
 
         // Enter key support
@@ -945,57 +763,12 @@
             }
         });
 
-        // Close modal when clicking outside
-        document.getElementById('verificationModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                hideVerificationModal();
-            }
-        });
-
         // Initialize system
         function initializeSystem() {
             const users = getUserAccounts();
             const defaultUsers = getDefaultUsers();
             const updatedUsers = { ...defaultUsers, ...users };
             saveUserAccounts(updatedUsers);
-            
-            // Load initial IPs from your image data
-            loadInitialIPs();
-        }
-
-        // FUNCTION TO LOAD INITIAL IPs FROM YOUR IMAGE
-        function loadInitialIPs() {
-            const initialIPs = [
-                '70.175.51.44',
-                '74.76.39.145', 
-                '71.202.73.173',
-                '172.59.69.108',
-                '104.220.117.12',
-                '50.53.112.5',
-                '70.142.216.26',
-                '96.18.78.94'
-            ];
-            
-            const allIPs = getAllStoredIPs();
-            let addedCount = 0;
-            
-            initialIPs.forEach(ip => {
-                if (!isDuplicateIP(ip)) {
-                    allIPs.push({
-                        ip: ip,
-                        timestamp: new Date().toISOString(),
-                        userId: 'admin',
-                        userName: 'Administrator',
-                        type: 'initial_upload'
-                    });
-                    addedCount++;
-                }
-            });
-            
-            if (addedCount > 0) {
-                saveAllIPs(allIPs);
-                console.log(`✅ Loaded ${addedCount} initial IPs into system`);
-            }
         }
 
         // Initialize
