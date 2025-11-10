@@ -1039,14 +1039,14 @@
     <div id="globalNotification" class="notification"></div>
 
     <script>
-        // MAKE SURE THESE MATCH USER PANEL EXACTLY
+        // ✅ FIXED: SAME STORAGE KEYS FOR BOTH PANELS
         const IP_STORAGE_KEY = 'ip_system_ips';
         const USER_STORAGE_KEY = 'ip_system_users';
         const ADMIN_PASSWORD = "admin123";
         const MAX_STORAGE_SIZE = 100000000;
         const MAX_BULK_UPLOAD = 2000;
 
-        // Pre-set user - SHOULD MATCH USER PANEL
+        // ✅ FIXED: SAME USER DATA FOR BOTH PANELS
         const PRESET_USER = {
             id: 'liveagent',
             name: 'liveagent123@gmail.com',
@@ -1055,23 +1055,40 @@
             created: new Date().toISOString()
         };
 
-        // GLOBAL DUPLICATE CHECKING FUNCTION - SAME FOR ALL PANELS
+        // ✅ FIXED: STRONG DUPLICATE CHECKING FUNCTION
         function isDuplicateIP(ip) {
-            const allIPs = getAllStoredIPs();
-            return allIPs.some(entry => entry.ip.trim() === ip.trim());
+            try {
+                const allIPs = getAllStoredIPs();
+                const cleanIP = ip.trim().toLowerCase();
+                
+                // Check if IP already exists (case insensitive, trimmed)
+                const duplicate = allIPs.some(entry => {
+                    const storedIP = entry.ip.trim().toLowerCase();
+                    return storedIP === cleanIP;
+                });
+                
+                console.log(`🔍 Duplicate Check: "${ip}" -> ${duplicate ? '❌ DUPLICATE' : '✅ UNIQUE'}`);
+                console.log('All stored IPs:', allIPs.map(ip => ip.ip));
+                
+                return duplicate;
+            } catch (error) {
+                console.error('Error in duplicate check:', error);
+                return false;
+            }
         }
 
-        // STORAGE FUNCTIONS
+        // ✅ FIXED: STORAGE FUNCTIONS
         function getCloudData(key) {
             try {
                 const stored = localStorage.getItem(key);
-                if (key === IP_STORAGE_KEY) {
-                    return stored ? JSON.parse(stored) : [];
-                } else if (key === USER_STORAGE_KEY) {
-                    return stored ? JSON.parse(stored) : getDefaultUsers();
+                if (!stored) {
+                    if (key === IP_STORAGE_KEY) return [];
+                    if (key === USER_STORAGE_KEY) return getDefaultUsers();
+                    return [];
                 }
-                return stored ? JSON.parse(stored) : [];
+                return JSON.parse(stored);
             } catch (e) {
+                console.error('Storage read error:', e);
                 if (key === IP_STORAGE_KEY) return [];
                 if (key === USER_STORAGE_KEY) return getDefaultUsers();
                 return [];
@@ -1081,9 +1098,10 @@
         function saveCloudData(key, data) {
             try {
                 localStorage.setItem(key, JSON.stringify(data));
+                console.log(`💾 Saved to ${key}:`, data);
                 return true;
             } catch (e) {
-                console.error('Storage error:', e);
+                console.error('Storage save error:', e);
                 return false;
             }
         }
@@ -1225,7 +1243,7 @@
             });
         }
 
-        // BULK IP UPLOAD WITH STRICT DUPLICATE DETECTION
+        // ✅ FIXED: BULK UPLOAD WITH PROPER DUPLICATE CHECKING
         function uploadBulkIPs() {
             const bulkText = document.getElementById('bulkIPs').value.trim();
             const selectedUser = document.getElementById('bulkUser').value;
@@ -1254,7 +1272,9 @@
 
             const ipPattern = /^(\d{1,3}\.){3}\d{1,3}$/;
 
-            // Process all IPs with STRICT duplicate checking
+            console.log('🚀 Starting bulk upload with', ipLines.length, 'IPs');
+
+            // Process each IP with STRONG duplicate checking
             ipLines.forEach((ip, index) => {
                 const cleanIP = ip.trim();
                 
@@ -1268,7 +1288,7 @@
                     return;
                 }
 
-                // STRICT DUPLICATE CHECKING - NO DUPLICATES ALLOWED
+                // ✅ STRONG DUPLICATE CHECKING
                 if (isDuplicateIP(cleanIP)) {
                     results.push({
                         ip: cleanIP,
@@ -1279,7 +1299,7 @@
                     return;
                 }
 
-                // Mark for success (will be added later)
+                // If no duplicate, mark for success
                 results.push({
                     ip: cleanIP,
                     status: 'success',
@@ -1288,22 +1308,30 @@
                 successCount++;
             });
 
-            // Now actually add the successful IPs to storage
+            // Add successful IPs to storage
+            const newIPs = [];
             results.forEach((result, index) => {
                 if (result.status === 'success') {
-                    allIPs.push({
+                    const newIPEntry = {
                         ip: result.ip,
                         timestamp: new Date().toISOString(),
                         userId: selectedUser,
                         userName: selectedUser === 'admin' ? 'Administrator' : 'Live Agent',
                         type: ipType
-                    });
+                    };
+                    allIPs.push(newIPEntry);
+                    newIPs.push(newIPEntry);
                 }
             });
 
-            // Save all IPs only once
-            if (successCount > 0) {
-                saveAllIPs(allIPs);
+            // Save only if there are new IPs
+            if (newIPs.length > 0) {
+                const saved = saveAllIPs(allIPs);
+                if (saved) {
+                    console.log('✅ Saved', newIPs.length, 'new IPs to storage');
+                } else {
+                    console.error('❌ Failed to save IPs to storage');
+                }
             }
 
             // Show results
@@ -1540,12 +1568,17 @@
             }
         });
 
-        // Initialize system - NO PRE-LOADED IPs
+        // ✅ FIXED: Initialize system properly
         function initializeSystem() {
             const users = getUserAccounts();
             const defaultUsers = getDefaultUsers();
+            
+            // Merge existing users with default users
             const updatedUsers = { ...defaultUsers, ...users };
             saveUserAccounts(updatedUsers);
+            
+            console.log('🔄 System initialized with users:', Object.keys(updatedUsers));
+            console.log('📊 Current IP count:', getAllStoredIPs().length);
         }
 
         // Initialize
