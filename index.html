@@ -518,7 +518,7 @@
     <div id="globalNotification" class="notification"></div>
 
     <script>
-        // Storage keys - MUST MATCH ADMIN PANEL
+        // ✅ FIXED: SAME STORAGE KEYS FOR BOTH PANELS
         const IP_STORAGE_KEY = 'ip_system_ips';
         const USER_STORAGE_KEY = 'ip_system_users';
         const CURRENT_USER_KEY = 'ip_current_user';
@@ -534,17 +534,18 @@
 
         let currentUser = null;
 
-        // STORAGE FUNCTIONS
+        // ✅ FIXED: STORAGE FUNCTIONS (SAME AS ADMIN PANEL)
         function getCloudData(key) {
             try {
                 const stored = localStorage.getItem(key);
-                if (key === IP_STORAGE_KEY) {
-                    return stored ? JSON.parse(stored) : [];
-                } else if (key === USER_STORAGE_KEY) {
-                    return stored ? JSON.parse(stored) : getDefaultUsers();
+                if (!stored) {
+                    if (key === IP_STORAGE_KEY) return [];
+                    if (key === USER_STORAGE_KEY) return getDefaultUsers();
+                    return [];
                 }
-                return stored ? JSON.parse(stored) : [];
+                return JSON.parse(stored);
             } catch (e) {
+                console.error('Storage read error:', e);
                 if (key === IP_STORAGE_KEY) return [];
                 if (key === USER_STORAGE_KEY) return getDefaultUsers();
                 return [];
@@ -554,9 +555,10 @@
         function saveCloudData(key, data) {
             try {
                 localStorage.setItem(key, JSON.stringify(data));
+                console.log(`💾 User Panel - Saved to ${key}:`, data);
                 return true;
             } catch (e) {
-                console.error('Storage error:', e);
+                console.error('Storage save error:', e);
                 return false;
             }
         }
@@ -686,7 +688,7 @@
             }
         }
 
-        // ✅ FIXED: STRONG DUPLICATE CHECKING FUNCTION
+        // ✅ FIXED: STRONG DUPLICATE CHECKING FUNCTION (SAME AS ADMIN PANEL)
         function isDuplicateIP(ip) {
             try {
                 const allIPs = getAllStoredIPs();
@@ -698,8 +700,8 @@
                     return storedIP === cleanIP;
                 });
                 
-                console.log(`🔍 Duplicate Check: "${ip}" -> ${duplicate ? '❌ DUPLICATE' : '✅ UNIQUE'}`);
-                console.log('All stored IPs:', allIPs.map(ip => ip.ip));
+                console.log(`🔍 User Panel - Duplicate Check: "${ip}" -> ${duplicate ? '❌ DUPLICATE' : '✅ UNIQUE'}`);
+                console.log('All stored IPs:', allIPs.map(entry => entry.ip));
                 
                 return duplicate;
             } catch (error) {
@@ -736,7 +738,7 @@
                 return;
             }
             
-            // ✅ FIXED: CHECK FOR DUPLICATE ACROSS ALL USERS
+            // ✅ FIXED: CHECK FOR DUPLICATE ACROSS ALL USERS AND ALL IPs
             if (isDuplicateIP(ipAddress)) {
                 showNotification('❌ Duplicate IP! This IP already exists in system.', 'error');
                 uploadBtn.classList.add('shake');
@@ -779,16 +781,18 @@
             }
         });
 
-        // Initialize system
+        // ✅ FIXED: Initialize system properly
         function initializeSystem() {
             const users = getUserAccounts();
             const defaultUsers = getDefaultUsers();
+            
+            // Merge existing users with default users
             const updatedUsers = { ...defaultUsers, ...users };
             saveUserAccounts(updatedUsers);
             
-            // Debug: Show current IPs in console
             console.log('🔄 User Panel Initialized');
             console.log('📊 Current IPs in system:', getAllStoredIPs());
+            console.log('👥 Current Users in system:', Object.keys(updatedUsers));
         }
 
         // Initialize
