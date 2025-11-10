@@ -518,7 +518,7 @@
     <div id="globalNotification" class="notification"></div>
 
     <script>
-        // ✅ FIXED: SAME STORAGE KEYS FOR BOTH PANELS
+        // ✅ CENTRALIZED STORAGE KEYS FOR BOTH PANELS
         const IP_STORAGE_KEY = 'ip_system_ips';
         const USER_STORAGE_KEY = 'ip_system_users';
         const CURRENT_USER_KEY = 'ip_current_user';
@@ -534,7 +534,7 @@
 
         let currentUser = null;
 
-        // ✅ FIXED: STORAGE FUNCTIONS (SAME AS ADMIN PANEL)
+        // ✅ CENTRALIZED STORAGE FUNCTIONS
         function getCloudData(key) {
             try {
                 const stored = localStorage.getItem(key);
@@ -688,7 +688,7 @@
             }
         }
 
-        // ✅ FIXED: STRONG DUPLICATE CHECKING FUNCTION (SAME AS ADMIN PANEL)
+        // ✅ STRONG DUPLICATE CHECKING FUNCTION
         function isDuplicateIP(ip) {
             try {
                 const allIPs = getAllStoredIPs();
@@ -710,7 +710,7 @@
             }
         }
 
-        // ✅ FIXED: UPLOAD FUNCTION - IPs ADMIN PANEL KE STORAGE MAIN SAVE HONGE
+        // ✅ UPLOAD FUNCTION WITH CENTRALIZED STORAGE
         function uploadIP() {
             if (!currentUser) {
                 showNotification('Please login first!', 'error');
@@ -738,7 +738,7 @@
                 return;
             }
             
-            // ✅ FIXED: CHECK FOR DUPLICATE ACROSS ALL USERS AND ALL IPs
+            // ✅ CHECK FOR DUPLICATE IN CENTRALIZED STORAGE
             if (isDuplicateIP(ipAddress)) {
                 showNotification('❌ Duplicate IP! This IP already exists in system.', 'error');
                 uploadBtn.classList.add('shake');
@@ -747,26 +747,23 @@
                 return;
             }
             
-            // ✅ FIXED: IPs ADMIN PANEL KE STORAGE MAIN SAVE HONGE
+            // ✅ SAVE TO CENTRALIZED STORAGE (ADMIN PANEL)
             const allIPs = getAllStoredIPs();
             const newIPEntry = {
                 ip: ipAddress,
                 timestamp: new Date().toISOString(),
                 userId: currentUser.id,
                 userName: currentUser.name,
-                type: 'user_upload'
+                type: 'user_upload',
+                source: 'user_panel'
             };
             
             allIPs.push(newIPEntry);
             const saved = saveAllIPs(allIPs);
             
             if (saved) {
-                showNotification(`✅ IP ${ipAddress} uploaded successfully to Admin Panel!`, 'success');
+                showNotification(`✅ IP ${ipAddress} uploaded successfully to centralized storage!`, 'success');
                 document.getElementById('ipAddress').value = '';
-                
-                // ✅ FIXED: CONFIRMATION KE LIYE CONSOLE LOG
-                console.log('✅ User Panel - IP saved to Admin Panel storage:', newIPEntry);
-                console.log('📊 Total IPs in Admin Panel:', allIPs.length);
             } else {
                 showNotification('❌ Error saving IP! Please try again.', 'error');
             }
@@ -785,7 +782,7 @@
             }
         });
 
-        // ✅ FIXED: Initialize system properly
+        // ✅ Initialize system properly
         function initializeSystem() {
             const users = getUserAccounts();
             const defaultUsers = getDefaultUsers();
@@ -795,7 +792,7 @@
             saveUserAccounts(updatedUsers);
             
             console.log('🔄 User Panel Initialized');
-            console.log('📊 Current IPs in Admin Panel:', getAllStoredIPs());
+            console.log('📊 Current IPs in centralized storage:', getAllStoredIPs());
             console.log('👥 Current Users in system:', Object.keys(updatedUsers));
         }
 
