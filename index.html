@@ -710,7 +710,7 @@
             }
         }
 
-        // ✅ FIXED: UPLOAD FUNCTION WITH PROPER DUPLICATE CHECKING
+        // ✅ FIXED: UPLOAD FUNCTION - IPs ADMIN PANEL KE STORAGE MAIN SAVE HONGE
         function uploadIP() {
             if (!currentUser) {
                 showNotification('Please login first!', 'error');
@@ -747,7 +747,7 @@
                 return;
             }
             
-            // IF NOT DUPLICATE, UPLOAD DIRECTLY
+            // ✅ FIXED: IPs ADMIN PANEL KE STORAGE MAIN SAVE HONGE
             const allIPs = getAllStoredIPs();
             const newIPEntry = {
                 ip: ipAddress,
@@ -761,8 +761,12 @@
             const saved = saveAllIPs(allIPs);
             
             if (saved) {
-                showNotification(`✅ IP ${ipAddress} uploaded successfully!`, 'success');
+                showNotification(`✅ IP ${ipAddress} uploaded successfully to Admin Panel!`, 'success');
                 document.getElementById('ipAddress').value = '';
+                
+                // ✅ FIXED: CONFIRMATION KE LIYE CONSOLE LOG
+                console.log('✅ User Panel - IP saved to Admin Panel storage:', newIPEntry);
+                console.log('📊 Total IPs in Admin Panel:', allIPs.length);
             } else {
                 showNotification('❌ Error saving IP! Please try again.', 'error');
             }
@@ -791,7 +795,7 @@
             saveUserAccounts(updatedUsers);
             
             console.log('🔄 User Panel Initialized');
-            console.log('📊 Current IPs in system:', getAllStoredIPs());
+            console.log('📊 Current IPs in Admin Panel:', getAllStoredIPs());
             console.log('👥 Current Users in system:', Object.keys(updatedUsers));
         }
 
