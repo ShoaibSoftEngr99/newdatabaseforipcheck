@@ -1068,7 +1068,7 @@
                 });
                 
                 console.log(`🔍 Admin Panel - Duplicate Check: "${ip}" -> ${duplicate ? '❌ DUPLICATE' : '✅ UNIQUE'}`);
-                console.log('All stored IPs:', allIPs.map(ip => ip.ip));
+                console.log('All stored IPs:', allIPs.map(entry => entry.ip));
                 
                 return duplicate;
             } catch (error) {
