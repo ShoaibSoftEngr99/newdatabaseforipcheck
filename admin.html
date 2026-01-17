@@ -3,661 +3,274 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - IP System</title>
+    <title>IP Validator | Professional System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ========== BASE STYLES ========== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         :root {
-            --primary: #2c5aa0;
-            --primary-dark: #1e3d72;
-            --secondary: #4a6fa5;
-            --success: #2e7d32;
-            --danger: #c62828;
-            --warning: #ef6c00;
-            --info: #0277bd;
-            --light: #f8fafc;
-            --dark: #1e293b;
-            --gray: #64748b;
-            --gray-light: #e2e8f0;
-            --card-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --hover-shadow: 0 20px 40px -4px rgba(0, 0, 0, 0.15), 0 8px 10px -4px rgba(0, 0, 0, 0.06);
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --success: #00b894;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #f8f9fa;
+            --dark: #2d3436;
+            --gray: #636e72;
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #2c3e50 0%, #1a2530 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #667eea 50%, #764ba2 75%, #667eea 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
-        }
-
-        .login-container {
-            width: 95%;
-            max-width: 600px;
-            margin: 80px auto;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            padding: 60px 50px;
-            border-radius: 20px;
-            box-shadow: var(--card-shadow);
-            display: block;
             position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            animation: slideUp 0.6s ease;
+            overflow-x: hidden;
         }
 
-        .login-container::before {
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
         }
 
-        .login-header {
+        /* ========== CONTAINER & CARD ========== */
+        .container {
+            width: 100%;
+            max-width: 500px;
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            padding: 45px 40px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--primary));
+            border-radius: 26px;
+            z-index: -1;
+            opacity: 0.3;
+            filter: blur(10px);
+        }
+
+        /* ========== HEADER & LOGO ========== */
+        .card-header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
+            position: relative;
         }
 
-        .admin-logo {
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 20px;
-            margin: 0 auto 25px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 20px rgba(44, 90, 160, 0.3);
+            font-size: 36px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(67, 97, 238, 0.4);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            animation: pulse 2s infinite;
         }
 
-        .admin-logo i {
-            font-size: 2.5rem;
-            color: white;
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
-        .login-header h1 {
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to bottom right, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+            transform: rotate(30deg);
+            animation: shine 3s infinite linear;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+        }
+
+        .logo-icon:hover {
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
             color: var(--dark);
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .login-header p {
+        .tagline {
             color: var(--gray);
-            font-size: 1.2rem;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-            position: relative;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 1rem;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 16px 50px 16px 18px;
-            border: 2px solid var(--gray-light);
-            border-radius: 12px;
-            font-size: 1.05rem;
-            transition: all 0.3s ease;
-            background: white;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(44, 90, 160, 0.1);
-        }
-
-        .input-icon {
-            position: absolute;
-            right: 18px;
-            top: 45px;
-            color: var(--gray);
-            font-size: 1.1rem;
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Inter', sans-serif;
-            box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
-        }
-
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--hover-shadow);
-        }
-
-        .admin-container {
-            width: 98%;
-            max-width: 1600px;
-            margin: 20px auto;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            box-shadow: var(--card-shadow);
-            overflow: hidden;
-            display: none;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            animation: slideUp 0.6s ease;
-            min-height: 95vh;
-        }
-
-        .admin-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-
-        .admin-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 35px 40px;
-            text-align: center;
-            position: relative;
-        }
-
-        .admin-header h1 {
-            font-size: 2.6rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .admin-header p {
-            font-size: 1.2rem;
+            font-size: 15px;
+            font-weight: 400;
+            margin-top: 8px;
             opacity: 0.9;
         }
 
-        .logout-btn {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 12px 24px;
-            border-radius: 10px;
-            cursor: pointer;
+        /* ========== INPUT FIELD ========== */
+        .input-group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .input-label {
+            display: block;
+            color: var(--dark);
             font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 15px;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s ease;
-            font-family: 'Inter', sans-serif;
-            backdrop-filter: blur(10px);
-            font-size: 1.05rem;
         }
 
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+        .input-label i {
+            color: var(--primary);
         }
 
-        .admin-nav {
-            background: var(--light);
-            padding: 0 40px;
-            border-bottom: 1px solid var(--gray-light);
-        }
-
-        .nav-tabs {
+        .ip-input-wrapper {
             display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .nav-tab {
-            padding: 22px 28px;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 1.05rem;
-        }
-
-        .nav-tab.active {
-            border-bottom-color: var(--primary);
-            color: var(--primary);
-            background: white;
-        }
-
-        .nav-tab:hover {
-            background: white;
-            color: var(--primary);
-        }
-
-        .tab-content {
-            display: none;
-            padding: 40px;
-            animation: fadeIn 0.5s ease;
-            min-height: 500px;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            padding: 30px;
-            background: var(--light);
             border-radius: 16px;
-            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            animation: slideInLeft 0.6s ease-out;
         }
 
-        .stat-card {
-            background: white;
-            padding: 30px;
-            border-radius: 14px;
-            text-align: center;
-            box-shadow: var(--card-shadow);
-            border-left: 4px solid var(--primary);
-            transition: all 0.3s ease;
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--hover-shadow);
+        .ip-input-wrapper:focus-within {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.2);
         }
 
-        .stat-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 15px;
+        .ip-prefix {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 0 25px;
+            height: 62px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            box-shadow: 0 6px 15px rgba(44, 90, 160, 0.3);
-        }
-
-        .stat-icon i {
-            font-size: 2rem;
-            color: white;
-        }
-
-        .stat-number {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: var(--primary);
-            display: block;
-            margin-bottom: 8px;
-            animation: countUp 0.8s ease-out;
-        }
-
-        .stat-label {
-            color: var(--gray);
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        .storage-info {
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            padding: 25px;
-            border-radius: 14px;
-            margin-bottom: 30px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .storage-bar {
-            width: 100%;
-            height: 18px;
-            background: var(--gray-light);
-            border-radius: 8px;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-
-        .storage-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--success), var(--primary));
-            transition: width 0.8s ease;
-            border-radius: 8px;
-        }
-
-        .data-section {
-            background: white;
-            padding: 35px;
-            border-radius: 16px;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 30px;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            color: var(--dark);
-            margin-bottom: 25px;
-            border-bottom: 2px solid var(--gray-light);
-            padding-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             font-weight: 700;
+            font-size: 20px;
+            min-width: 80px;
         }
 
-        .section-actions {
+        #ip-input {
+            flex: 1;
+            height: 62px;
+            padding: 0 22px;
+            border: 2px solid #e0e0e0;
+            border-left: none;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--dark);
+            background: white;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        #ip-input:focus {
+            border-color: var(--primary);
+        }
+
+        .input-hint {
+            display: block;
+            color: var(--gray);
+            font-size: 13px;
+            margin-top: 10px;
+            margin-left: 5px;
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 18px 22px;
-            text-align: left;
-            border-bottom: 1px solid var(--gray-light);
-        }
-
-        .data-table th {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .data-table tr:hover {
-            background: #f8fafc;
-        }
-
-        .data-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
             align-items: center;
             gap: 6px;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-        }
-
-        .btn-sm {
-            padding: 10px 18px;
-            font-size: 0.95rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(44, 90, 160, 0.3);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--success), #1b5e20);
-            color: white;
-        }
-
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(46, 125, 50, 0.3);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, var(--danger), #b71c1c);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(198, 40, 40, 0.3);
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, var(--warning), #e65100);
-            color: white;
-        }
-
-        .btn-warning:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(239, 108, 0, 0.3);
-        }
-
-        .bulk-actions {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .search-box {
-            max-width: 400px;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 14px 45px 14px 18px;
-            border: 2px solid var(--gray-light);
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: white;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(44, 90, 160, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray);
-            font-size: 1.1rem;
-        }
-
-        .user-form {
-            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-            padding: 30px;
-            border-radius: 14px;
-            margin-bottom: 30px;
-            border: 2px dashed var(--gray-light);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 18px;
-            margin-bottom: 20px;
-        }
-
-        .status-active {
-            color: var(--success);
-            font-weight: 600;
-            background: #d1fae5;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.85rem;
-        }
-
-        .status-inactive {
-            color: var(--danger);
-            font-weight: 600;
-            background: #fee2e2;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.85rem;
-        }
-
-        .bulk-upload-section {
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            padding: 30px;
-            border-radius: 14px;
-            margin-bottom: 30px;
-            border: 2px dashed var(--primary);
-        }
-
-        .bulk-textarea {
-            width: 100%;
-            height: 180px;
-            padding: 18px;
-            border: 2px solid var(--gray-light);
-            border-radius: 10px;
-            font-family: 'Inter', monospace;
-            font-size: 1rem;
-            resize: vertical;
-            margin-bottom: 20px;
-        }
-
-        .bulk-textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(44, 90, 160, 0.1);
-        }
-
-        .bulk-info {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border-left: 4px solid var(--info);
-        }
-
-        .bulk-info h4 {
-            color: var(--dark);
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
-
-        .bulk-info ul {
-            color: var(--gray);
-            font-size: 0.9rem;
-            padding-left: 20px;
-        }
-
-        .bulk-info li {
-            margin-bottom: 5px;
-        }
-
-        .notification {
-            position: fixed;
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            padding: 20px 30px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1.05rem;
-            z-index: 1001;
-            display: none;
-            min-width: 450px;
-            text-align: center;
-            box-shadow: var(--card-shadow);
-            backdrop-filter: blur(10px);
-            border: 2px solid transparent;
-            animation: slideDownNotification 0.4s ease forwards;
-        }
-
-        .notification.success {
-            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-            color: #065f46;
-            border-color: var(--success);
-        }
-
-        .notification.error {
-            background: linear-gradient(135deg, #fee2e2, #fecaca);
-            color: #991b1b;
-            border-color: var(--danger);
-        }
-
-        .notification.warning {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            color: #92400e;
-            border-color: var(--warning);
-        }
-
-        .duplicate-ip {
-            background: #fef3c7 !important;
-            color: #92400e;
-            font-weight: 600;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideDownNotification {
-            from {
-                transform: translateX(-50%) translateY(-100px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(-50%) translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes countUp {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            animation: fadeIn 0.8s ease-out 0.3s both;
         }
 
         @keyframes fadeIn {
@@ -665,927 +278,855 @@
             to { opacity: 1; }
         }
 
-        @keyframes shake {
-            0%, 100% {transform: translateX(0);}
-            10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
-            20%, 40%, 60%, 80% {transform: translateX(5px);}
+        /* ========== BUTTONS ========== */
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-top: 35px;
+            animation: slideInUp 0.6s ease-out 0.4s both;
         }
 
-        .shake {
-            animation: shake 0.5s ease-in-out;
-        }
-
-        @media (max-width: 1200px) {
-            .admin-container {
-                margin: 20px;
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
+        #check-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            height: 62px;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        #check-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        #check-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(67, 97, 238, 0.4);
+        }
+
+        #check-btn:hover::before {
+            left: 100%;
+        }
+
+        #check-btn:active {
+            transform: translateY(0);
+        }
+
+        #logout-btn {
+            background: transparent;
+            color: var(--gray);
+            border: 2px solid #e0e0e0;
+            height: 56px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #logout-btn:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: rgba(231, 76, 60, 0.05);
+            transform: translateY(-2px);
+        }
+
+        /* ========== LOADING ========== */
+        .loading-container {
+            display: none;
+            text-align: center;
+            margin-top: 25px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ========== PAPER-STYLE MESSAGES ========== */
+        .message-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 350px;
+        }
+
+        .paper-message {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+            border-left: 5px solid;
+            transform: translateX(400px);
+            opacity: 0;
+            animation: slideInRight 0.5s ease-out forwards;
+        }
+
+        @keyframes slideInRight {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Success Message (Like Order Success) */
+        .paper-success {
+            border-left-color: var(--success);
+            background: linear-gradient(to right, #ffffff, #f8fff8);
+            box-shadow: 0 10px 30px rgba(0, 184, 148, 0.2);
+        }
+
+        .paper-success::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, var(--success), #00ffcc);
+        }
+
+        .paper-success .message-icon {
+            background: rgba(0, 184, 148, 0.15);
+            color: var(--success);
+        }
+
+        /* Error Message (Duplicate) */
+        .paper-error {
+            border-left-color: var(--danger);
+            background: linear-gradient(to right, #ffffff, #fff8f8);
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.2);
+        }
+
+        .paper-error::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, var(--danger), #ff6b6b);
+        }
+
+        .paper-error .message-icon {
+            background: rgba(231, 76, 60, 0.15);
+            color: var(--danger);
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .message-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .message-title {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--dark);
+        }
+
+        .message-content {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.5;
+            margin-left: 60px;
+        }
+
+        .message-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 5px;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .message-close:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--danger);
+        }
+
+        /* Success Animation */
+        @keyframes successConfetti {
+            0% { transform: translateY(0) rotate(0); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: successConfetti 1s ease-out forwards;
+        }
+
+        /* Error Animation */
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .shake-error {
+            animation: shakeError 0.5s ease-in-out;
+        }
+
+        /* ========== ADMIN PANEL ========== */
+        .admin-toggle {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: transparent;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 22px;
+            transition: var(--transition);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: rotateIn 0.8s ease-out;
+        }
+
+        @keyframes rotateIn {
+            from {
+                transform: rotate(-180deg);
+                opacity: 0;
+            }
+            to {
+                transform: rotate(0);
+                opacity: 1;
+            }
+        }
+
+        .admin-toggle:hover {
+            color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .admin-panel {
+            display: none;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .admin-title {
+            color: var(--dark);
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-title i {
+            color: var(--danger);
+        }
+
+        #clear-db-btn {
+            background: transparent;
+            color: var(--danger);
+            border: 2px solid var(--danger);
+            height: 52px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        #clear-db-btn:hover {
+            background: var(--danger);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+        }
+
+        #admin-result {
+            margin-top: 15px;
+            min-height: 60px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 1s ease-out 0.8s both;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+            opacity: 0.9;
+        }
+
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
-            .admin-container {
-                margin: 15px;
+            .message-container {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
             }
             
-            .admin-header {
-                padding: 25px 20px;
-            }
-            
-            .admin-header h1 {
-                font-size: 2.2rem;
-            }
-            
-            .nav-tabs {
-                flex-direction: column;
-            }
-            
-            .nav-tab {
-                padding: 18px 22px;
-                border-bottom: 1px solid var(--gray-light);
-                border-left: 4px solid transparent;
-            }
-            
-            .nav-tab.active {
-                border-left-color: var(--primary);
-                border-bottom-color: var(--gray-light);
-            }
-            
-            .tab-content {
-                padding: 25px 20px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-                padding: 20px;
-            }
-            
-            .data-section {
-                padding: 25px 20px;
-            }
-            
-            .section-title {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
-            
-            .logout-btn {
-                position: relative;
-                margin-bottom: 15px;
-                width: 100%;
-                top: auto;
-                right: auto;
-            }
-            
-            .notification {
-                min-width: 90%;
-                left: 5%;
-                transform: translateX(0) translateY(-100px);
-            }
-            
-            .login-container {
-                margin: 40px 20px;
-                padding: 40px 30px;
+            .paper-message {
+                max-width: 100%;
             }
         }
 
-        @media (max-width: 480px) {
-            .login-container {
-                padding: 30px 25px;
+        @media (max-width: 576px) {
+            .card {
+                padding: 35px 25px;
             }
             
-            .admin-header h1 {
-                font-size: 2rem;
+            .logo-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 32px;
             }
             
-            .stat-number {
-                font-size: 2.5rem;
+            .logo-text {
+                font-size: 24px;
+            }
+            
+            .ip-prefix {
+                padding: 0 20px;
+                height: 58px;
+                min-width: 70px;
+                font-size: 18px;
+            }
+            
+            #ip-input {
+                height: 58px;
+                font-size: 16px;
+            }
+            
+            .admin-toggle {
+                top: 20px;
+                right: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
-    <div class="login-container" id="loginContainer">
-        <div class="login-header">
-            <div class="admin-logo">
-                <i class="fas fa-cogs"></i>
-            </div>
-            <h1>Admin Panel</h1>
-            <p>IP System Management</p>
-        </div>
+    <!-- Message Container (Top Right Corner) -->
+    <div class="message-container" id="messageContainer"></div>
 
-        <div class="form-group">
-            <label for="adminPassword"><i class="fas fa-key"></i> Admin Password</label>
-            <input type="password" id="adminPassword" placeholder="Enter admin password" required>
-            <i class="fas fa-lock input-icon"></i>
-        </div>
-
-        <button class="login-btn" onclick="login()">
-            <i class="fas fa-sign-in-alt"></i> Access Admin Panel
-        </button>
-    </div>
-
-    <!-- Admin Panel -->
-    <div class="admin-container" id="adminContainer">
-        <div class="admin-header">
-            <h1><i class="fas fa-cogs"></i> Admin Control Panel</h1>
-            <p>Complete IP Management System</p>
-            <button class="logout-btn" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> Logout
+    <!-- Main Container -->
+    <div class="container">
+        <div class="card">
+            <!-- Admin Toggle -->
+            <button class="admin-toggle" id="admin-toggle" title="Admin Panel">
+                <i class="fas fa-cog"></i>
             </button>
-        </div>
-
-        <div class="admin-nav">
-            <ul class="nav-tabs">
-                <li class="nav-tab active" onclick="switchTab('dashboard')">
-                    <i class="fas fa-tachometer-alt"></i> Dashboard
-                </li>
-                <li class="nav-tab" onclick="switchTab('bulk')">
-                    <i class="fas fa-upload"></i> Bulk IP Upload
-                </li>
-                <li class="nav-tab" onclick="switchTab('users')">
-                    <i class="fas fa-users"></i> User Management
-                </li>
-                <li class="nav-tab" onclick="switchTab('ips')">
-                    <i class="fas fa-network-wired"></i> IP Management
-                </li>
-            </ul>
-        </div>
-
-        <!-- Dashboard Tab -->
-        <div id="dashboard-tab" class="tab-content active">
-            <div class="storage-info">
-                <h3><i class="fas fa-database"></i> Centralized Storage Overview</h3>
-                <div class="storage-bar">
-                    <div class="storage-fill" id="storageFill"></div>
-                </div>
-                <p>Stored IPs: <strong id="storageCount">0</strong> / 100,000,000 (100 Million Capacity)</p>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-calendar-day"></i>
+            
+            <!-- Header -->
+            <div class="card-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-shield-check"></i>
                     </div>
-                    <span class="stat-number" id="todayCount">0</span>
-                    <span class="stat-label">Today's IPs</span>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <span class="stat-number" id="totalCount">0</span>
-                    <span class="stat-label">Total IPs</span>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <span class="stat-number" id="totalUsers">0</span>
-                    <span class="stat-label">Total Users</span>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-user-check"></i>
-                    </div>
-                    <span class="stat-number" id="activeUsers">0</span>
-                    <span class="stat-label">Active Users</span>
+                    <div class="logo-text">IP<span>Validator</span></div>
+                    <div class="tagline">Check IP Duplicates Instantly</div>
                 </div>
             </div>
 
-            <div class="data-section">
-                <h3 class="section-title">
-                    <span><i class="fas fa-history"></i> Recent Activity (All Sources)</span>
-                </h3>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>IP Address</th>
-                            <th>Source</th>
-                            <th>Timestamp</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recentActivityTable">
-                        <tr>
-                            <td colspan="4" style="text-align: center; color: var(--gray);">No recent activity</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Bulk IP Upload Tab -->
-        <div id="bulk-tab" class="tab-content">
-            <div class="bulk-upload-section">
-                <h3 class="section-title">
-                    <span><i class="fas fa-upload"></i> Bulk IP Upload (2000 IPs at once)</span>
-                </h3>
-                
-                <textarea class="bulk-textarea" id="bulkIPs" placeholder="Paste IP addresses here (one per line)&#10;Example:&#10;192.168.1.1&#10;192.168.1.2&#10;192.168.1.3"></textarea>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Upload as User</label>
-                        <select id="bulkUser" style="width: 100%; padding: 14px; border: 2px solid var(--gray-light); border-radius: 8px;">
-                            <option value="admin">Admin</option>
-                            <option value="liveagent">Live Agent</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>IP Type</label>
-                        <select id="bulkType" style="width: 100%; padding: 14px; border: 2px solid var(--gray-light); border-radius: 8px;">
-                            <option value="admin_upload">Admin Upload</option>
-                            <option value="bulk_upload">Bulk Upload</option>
-                        </select>
-                    </div>
+            <!-- IP Input -->
+            <div class="input-group">
+                <label class="input-label">
+                    <i class="fas fa-network-wired"></i>
+                    Enter IP Address
+                </label>
+                <div class="ip-input-wrapper">
+                    <div class="ip-prefix">IP</div>
+                    <input type="text" id="ip-input" placeholder="192.168.1.1" maxlength="45" autocomplete="off" value="192.168.1.1">
                 </div>
-
-                <div class="bulk-actions">
-                    <button class="btn btn-success" onclick="uploadBulkIPs()">
-                        <i class="fas fa-cloud-upload-alt"></i> Upload IPs
-                    </button>
-                    <button class="btn btn-warning" onclick="clearBulkInput()">
-                        <i class="fas fa-broom"></i> Clear
-                    </button>
-                    <button class="btn btn-primary" onclick="generateSampleIPs()">
-                        <i class="fas fa-magic"></i> Generate Sample
-                    </button>
-                </div>
-
-                <div class="bulk-info">
-                    <h4><i class="fas fa-info-circle"></i> Bulk Upload Instructions:</h4>
-                    <ul>
-                        <li>Enter one IP address per line</li>
-                        <li>Maximum 2000 IPs in one upload</li>
-                        <li>Duplicate IPs will be automatically detected and skipped</li>
-                        <li>Invalid IP formats will be skipped</li>
-                        <li>All IPs are stored in centralized storage for duplicate checking</li>
-                    </ul>
-                </div>
+                <span class="input-hint">
+                    <i class="fas fa-info-circle"></i>
+                    Format: xxx.xxx.xxx.xxx (IPv4)
+                </span>
             </div>
 
-            <div class="data-section">
-                <h3 class="section-title">
-                    <span><i class="fas fa-list"></i> Upload Results</span>
-                </h3>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>IP Address</th>
-                            <th>Status</th>
-                            <th>Message</th>
-                        </tr>
-                    </thead>
-                    <tbody id="uploadResults">
-                        <tr>
-                            <td colspan="3" style="text-align: center; color: var(--gray);">No uploads yet</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- User Management Tab -->
-        <div id="users-tab" class="tab-content">
-            <div class="user-form">
-                <h3><i class="fas fa-user-plus"></i> Create New User</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>User ID</label>
-                        <input type="text" id="newUserId" placeholder="Enter unique user ID">
-                    </div>
-                    <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" id="newUserName" placeholder="Enter display name">
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" id="newUserPassword" placeholder="Set secure password">
-                    </div>
-                </div>
-                <button class="btn btn-success" onclick="createUser()">
-                    <i class="fas fa-plus"></i> Create User
+            <!-- Buttons -->
+            <div class="buttons-container">
+                <button id="check-btn">
+                    <i class="fas fa-search"></i>
+                    <span>Check IP Address</span>
+                </button>
+                <button id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout System</span>
                 </button>
             </div>
 
-            <div class="data-section">
-                <h3 class="section-title">
-                    <span><i class="fas fa-users-cog"></i> User Accounts</span>
-                    <div class="search-box">
-                        <input type="text" id="userSearch" placeholder="Search users...">
-                        <i class="fas fa-search search-icon"></i>
-                    </div>
-                </h3>
+            <!-- Loading -->
+            <div class="loading-container" id="loading">
+                <div class="loader"></div>
+                <p style="color: var(--gray); margin-top: 10px;">Verifying IP address...</p>
+            </div>
 
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>User ID</th>
-                            <th>Username</th>
-                            <th>Status</th>
-                            <th>Created Date</th>
-                            <th>Total IPs</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="usersTable">
-                        <!-- Data will be populated here -->
-                    </tbody>
-                </table>
+            <!-- Admin Panel (Hidden) -->
+            <div class="admin-panel" id="admin-panel">
+                <h3 class="admin-title">
+                    <i class="fas fa-user-shield"></i>
+                    Admin Controls
+                </h3>
+                <button id="clear-db-btn">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Clear All IPs from Database</span>
+                </button>
+                <div id="admin-result"></div>
             </div>
         </div>
 
-        <!-- IP Management Tab -->
-        <div id="ips-tab" class="tab-content">
-            <div class="data-section">
-                <h3 class="section-title">
-                    <span><i class="fas fa-network-wired"></i> All IP Addresses (Centralized Storage)</span>
-                    <div class="bulk-actions">
-                        <button class="btn btn-danger" onclick="clearAllIPs()">
-                            <i class="fas fa-bomb"></i> Clear All IPs
-                        </button>
-                        <button class="btn btn-warning" onclick="exportIPs()">
-                            <i class="fas fa-download"></i> Export IPs
-                        </button>
-                    </div>
-                </h3>
-
-                <div class="search-box">
-                    <input type="text" id="ipSearch" placeholder="Search IP addresses...">
-                    <i class="fas fa-search search-icon"></i>
-                </div>
-
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>IP Address</th>
-                            <th>User</th>
-                            <th>Source</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="allIPsTable">
-                        <!-- Data will be populated here -->
-                    </tbody>
-                </table>
-            </div>
+        <div class="footer">
+            <p>© 2024 IP Checker System | Professional IP Validation</p>
+            <p>Running on http://localhost:5000</p>
         </div>
     </div>
 
-    <!-- Global Notification -->
-    <div id="globalNotification" class="notification"></div>
-
+    <!-- JavaScript -->
     <script>
-        // ✅ CENTRALIZED STORAGE KEYS FOR BOTH PANELS
-        const IP_STORAGE_KEY = 'ip_system_ips';
-        const USER_STORAGE_KEY = 'ip_system_users';
-        const ADMIN_PASSWORD = "admin123";
-        const MAX_STORAGE_SIZE = 100000000;
-        const MAX_BULK_UPLOAD = 2000;
+        // ========== CONFIGURATION ==========
+        const API_BASE_URL = 'http://localhost:5000';
+        
+        // ========== DOM ELEMENTS ==========
+        const ipInput = document.getElementById('ip-input');
+        const checkBtn = document.getElementById('check-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const loading = document.getElementById('loading');
+        const adminToggle = document.getElementById('admin-toggle');
+        const adminPanel = document.getElementById('admin-panel');
+        const clearDbBtn = document.getElementById('clear-db-btn');
+        const adminResult = document.getElementById('admin-result');
+        const messageContainer = document.getElementById('messageContainer');
 
-        // ✅ SAME USER DATA FOR BOTH PANELS
-        const PRESET_USER = {
-            id: 'liveagent',
-            name: 'liveagent123@gmail.com',
-            password: 'blueston123',
-            status: 'Active',
-            created: new Date().toISOString()
-        };
-
-        // ✅ STRONG DUPLICATE CHECKING FUNCTION
-        function isDuplicateIP(ip) {
-            try {
-                const allIPs = getAllStoredIPs();
-                const cleanIP = ip.trim().toLowerCase();
-                
-                // Check if IP already exists (case insensitive, trimmed)
-                const duplicate = allIPs.some(entry => {
-                    const storedIP = entry.ip.trim().toLowerCase();
-                    return storedIP === cleanIP;
-                });
-                
-                console.log(`🔍 Admin Panel - Duplicate Check: "${ip}" -> ${duplicate ? '❌ DUPLICATE' : '✅ UNIQUE'}`);
-                console.log('All stored IPs in centralized storage:', allIPs.map(entry => entry.ip));
-                
-                return duplicate;
-            } catch (error) {
-                console.error('Error in duplicate check:', error);
-                return false;
-            }
-        }
-
-        // ✅ CENTRALIZED STORAGE FUNCTIONS
-        function getCloudData(key) {
-            try {
-                const stored = localStorage.getItem(key);
-                if (!stored) {
-                    if (key === IP_STORAGE_KEY) return [];
-                    if (key === USER_STORAGE_KEY) return getDefaultUsers();
-                    return [];
-                }
-                return JSON.parse(stored);
-            } catch (e) {
-                console.error('Storage read error:', e);
-                if (key === IP_STORAGE_KEY) return [];
-                if (key === USER_STORAGE_KEY) return getDefaultUsers();
-                return [];
-            }
-        }
-
-        function saveCloudData(key, data) {
-            try {
-                localStorage.setItem(key, JSON.stringify(data));
-                console.log(`💾 Admin Panel - Saved to ${key}:`, data);
-                return true;
-            } catch (e) {
-                console.error('Storage save error:', e);
-                return false;
-            }
-        }
-
-        function getDefaultUsers() {
-            return {
-                'admin': {
-                    id: 'admin',
-                    name: 'Administrator',
-                    password: 'admin123',
-                    status: 'Active',
-                    created: new Date().toISOString()
-                },
-                'liveagent': PRESET_USER
-            };
-        }
-
-        function getUserAccounts() {
-            return getCloudData(USER_STORAGE_KEY);
-        }
-
-        function saveUserAccounts(users) {
-            return saveCloudData(USER_STORAGE_KEY, users);
-        }
-
-        function getAllStoredIPs() {
-            return getCloudData(IP_STORAGE_KEY);
-        }
-
-        function saveAllIPs(ips) {
-            return saveCloudData(IP_STORAGE_KEY, ips);
-        }
-
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('globalNotification');
-            notification.textContent = message;
-            notification.className = `notification ${type}`;
-            notification.style.display = 'block';
+        // ========== SHOW PAPER MESSAGE ==========
+        function showPaperMessage(title, message, isSuccess) {
+            const messageId = 'msg-' + Date.now();
+            const messageType = isSuccess ? 'paper-success' : 'paper-error';
+            const iconClass = isSuccess ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
             
+            const messageElement = document.createElement('div');
+            messageElement.className = `paper-message ${messageType}`;
+            messageElement.id = messageId;
+            
+            messageElement.innerHTML = `
+                <button class="message-close" onclick="removeMessage('${messageId}')">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="message-header">
+                    <div class="message-icon">
+                        <i class="${iconClass}"></i>
+                    </div>
+                    <div class="message-title">${title}</div>
+                </div>
+                <div class="message-content">${message}</div>
+            `;
+            
+            // Add to container
+            messageContainer.appendChild(messageElement);
+            
+            // Success animation effects
+            if (isSuccess) {
+                createConfetti(messageElement);
+                
+                // Add subtle scale animation
+                messageElement.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    messageElement.style.transition = 'transform 0.3s ease';
+                    messageElement.style.transform = 'scale(1)';
+                }, 10);
+            } else {
+                // Error shake animation
+                messageElement.classList.add('shake-error');
+                setTimeout(() => {
+                    messageElement.classList.remove('shake-error');
+                }, 500);
+            }
+            
+            // Auto remove after 5 seconds
             setTimeout(() => {
-                notification.style.display = 'none';
-            }, 4000);
+                removeMessage(messageId);
+            }, 5000);
         }
 
-        function login() {
-            const password = document.getElementById('adminPassword').value;
-            const loginBtn = document.querySelector('.login-btn');
-            
-            if (password === ADMIN_PASSWORD) {
-                document.getElementById('loginContainer').style.display = 'none';
-                document.getElementById('adminContainer').style.display = 'block';
-                loadAdminData();
-                showNotification('Admin access granted! Welcome to control panel.', 'success');
-            } else {
-                showNotification('Invalid admin password! Access denied.', 'error');
-                loginBtn.classList.add('shake');
-                setTimeout(() => loginBtn.classList.remove('shake'), 500);
+        // ========== REMOVE MESSAGE ==========
+        function removeMessage(messageId) {
+            const message = document.getElementById(messageId);
+            if (message) {
+                message.style.transform = 'translateX(400px)';
+                message.style.opacity = '0';
+                setTimeout(() => {
+                    if (message.parentNode) {
+                        message.parentNode.removeChild(message);
+                    }
+                }, 500);
             }
         }
 
-        function logout() {
-            document.getElementById('adminContainer').style.display = 'none';
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('adminPassword').value = '';
-            showNotification('Admin session terminated.', 'warning');
-        }
-
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-
-            document.getElementById(tabName + '-tab').classList.add('active');
-            event.currentTarget.classList.add('active');
-
-            if (tabName === 'users') {
-                loadUsersData();
-            } else if (tabName === 'ips') {
-                loadIPsData();
+        // ========== CREATE CONFETTI EFFECT ==========
+        function createConfetti(container) {
+            const colors = ['#00b894', '#00cec9', '#81ecec', '#74b9ff', '#a29bfe'];
+            
+            for (let i = 0; i < 15; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '100%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = confetti.style.width;
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                
+                container.appendChild(confetti);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (confetti.parentNode) {
+                        confetti.parentNode.removeChild(confetti);
+                    }
+                }, 1000);
             }
         }
 
-        function updateStorageInfo() {
-            const allIPs = getAllStoredIPs();
-            const storageCount = allIPs.length;
-            const storagePercentage = (storageCount / MAX_STORAGE_SIZE) * 100;
+        // ========== CHECK IP FUNCTION ==========
+        async function checkIP() {
+            const ip = ipInput.value.trim();
             
-            document.getElementById('storageCount').textContent = storageCount.toLocaleString();
-            document.getElementById('storageFill').style.width = `${storagePercentage}%`;
-        }
-
-        function loadAdminData() {
-            const allStoredIPs = getAllStoredIPs();
-            const users = getUserAccounts();
-            
-            let todayCount = 0;
-            const today = new Date().toDateString();
-            const todayIPs = allStoredIPs.filter(ip => new Date(ip.timestamp).toDateString() === today);
-            todayCount = todayIPs.length;
-
-            const totalUsers = Object.keys(users).length;
-            const activeUsers = Object.values(users).filter(user => user.status === 'Active').length;
-
-            // Update stats
-            document.getElementById('todayCount').textContent = todayCount.toLocaleString();
-            document.getElementById('totalCount').textContent = allStoredIPs.length.toLocaleString();
-            document.getElementById('totalUsers').textContent = totalUsers.toLocaleString();
-            document.getElementById('activeUsers').textContent = activeUsers.toLocaleString();
-            
-            updateStorageInfo();
-            loadRecentActivity();
-        }
-
-        function loadRecentActivity() {
-            const allIPs = getAllStoredIPs();
-            const recentTable = document.getElementById('recentActivityTable');
-            recentTable.innerHTML = '';
-            
-            const recentIPs = allIPs.slice(-10).reverse();
-            
-            if (recentIPs.length === 0) {
-                recentTable.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--gray);">No recent activity</td></tr>';
+            // Simple validation
+            if (!ip) {
+                showPaperMessage('Error', 'Please enter an IP address', false);
                 return;
             }
             
-            recentIPs.forEach(entry => {
-                const row = document.createElement('tr');
-                const date = new Date(entry.timestamp);
-                row.innerHTML = `
-                    <td><strong>${entry.userName || entry.userId}</strong></td>
-                    <td><code>${entry.ip}</code></td>
-                    <td><span class="status-active">${entry.source || 'admin_panel'}</span></td>
-                    <td>${date.toLocaleString()}</td>
-                `;
-                recentTable.appendChild(row);
-            });
-        }
-
-        // ✅ BULK UPLOAD WITH CENTRALIZED STORAGE
-        function uploadBulkIPs() {
-            const bulkText = document.getElementById('bulkIPs').value.trim();
-            const selectedUser = document.getElementById('bulkUser').value;
-            const ipType = document.getElementById('bulkType').value;
-            const uploadBtn = document.querySelector('.btn-success');
-
-            if (!bulkText) {
-                showNotification('Please enter IP addresses to upload!', 'warning');
-                uploadBtn.classList.add('shake');
-                setTimeout(() => uploadBtn.classList.remove('shake'), 500);
-                return;
-            }
-
-            const ipLines = bulkText.split('\n').filter(line => line.trim());
-            
-            if (ipLines.length > MAX_BULK_UPLOAD) {
-                showNotification(`Maximum ${MAX_BULK_UPLOAD} IPs allowed per upload!`, 'error');
-                return;
-            }
-
-            const allIPs = getAllStoredIPs();
-            const results = [];
-            let successCount = 0;
-            let duplicateCount = 0;
-            let invalidCount = 0;
-
             const ipPattern = /^(\d{1,3}\.){3}\d{1,3}$/;
-
-            console.log('🚀 Admin Panel - Starting bulk upload with', ipLines.length, 'IPs');
-
-            // Process each IP with STRONG duplicate checking
-            ipLines.forEach((ip, index) => {
-                const cleanIP = ip.trim();
-                
-                if (!ipPattern.test(cleanIP)) {
-                    results.push({
-                        ip: cleanIP,
-                        status: 'invalid',
-                        message: 'Invalid IP format'
-                    });
-                    invalidCount++;
-                    return;
-                }
-
-                // ✅ CHECK FOR DUPLICATE IN CENTRALIZED STORAGE
-                if (isDuplicateIP(cleanIP)) {
-                    results.push({
-                        ip: cleanIP,
-                        status: 'duplicate',
-                        message: '❌ Duplicate IP - already exists in system'
-                    });
-                    duplicateCount++;
-                    return;
-                }
-
-                // If no duplicate, mark for success
-                results.push({
-                    ip: cleanIP,
-                    status: 'success',
-                    message: '✅ Uploaded successfully'
+            if (!ipPattern.test(ip)) {
+                showPaperMessage('Error', 'Invalid IP format. Use: 192.168.1.1', false);
+                return;
+            }
+            
+            // Show loading
+            loading.style.display = 'block';
+            
+            try {
+                const response = await fetch(API_BASE_URL + '/api/check-ip', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ ip: ip })
                 });
-                successCount++;
-            });
-
-            // Add successful IPs to CENTRALIZED STORAGE
-            const newIPs = [];
-            results.forEach((result, index) => {
-                if (result.status === 'success') {
-                    const newIPEntry = {
-                        ip: result.ip,
-                        timestamp: new Date().toISOString(),
-                        userId: selectedUser,
-                        userName: selectedUser === 'admin' ? 'Administrator' : 'Live Agent',
-                        type: ipType,
-                        source: 'admin_panel'
-                    };
-                    allIPs.push(newIPEntry);
-                    newIPs.push(newIPEntry);
-                }
-            });
-
-            // Save only if there are new IPs
-            if (newIPs.length > 0) {
-                const saved = saveAllIPs(allIPs);
-                if (saved) {
-                    console.log('✅ Admin Panel - Saved', newIPs.length, 'new IPs to centralized storage');
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    if (data.duplicate) {
+                        // Duplicate IP - Red paper message
+                        showPaperMessage(
+                            'Duplicate IP Found!',
+                            'Duplicate IP, Create a New Profile<br><small>This IP already exists in the database</small>',
+                            false
+                        );
+                    } else {
+                        // Unique IP - Success paper message (like order success)
+                        showPaperMessage(
+                            'Success! Unique IP',
+                            'IP address has been successfully added to database<br><small>The IP is unique and has been saved</small>',
+                            true
+                        );
+                        
+                        // Generate random IP for next test
+                        ipInput.value = '192.168.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255);
+                    }
                 } else {
-                    console.error('❌ Admin Panel - Failed to save IPs to centralized storage');
+                    showPaperMessage('Error', data.message || 'Server error', false);
                 }
+            } catch (error) {
+                showPaperMessage(
+                    'Connection Error',
+                    'Cannot connect to server. Check if backend is running!',
+                    false
+                );
+                console.error('Error:', error);
+            } finally {
+                loading.style.display = 'none';
             }
-
-            // Show results
-            showUploadResults(results);
-            
-            // Show summary notification
-            if (successCount > 0) {
-                showNotification(`✅ ${successCount} IPs uploaded successfully to centralized storage! ${duplicateCount} duplicates skipped.`, 'success');
-            } else if (duplicateCount > 0) {
-                showNotification(`❌ All IPs are duplicates! No new IPs uploaded.`, 'error');
-            } else {
-                showNotification(`⚠️ No valid IPs found to upload.`, 'warning');
-            }
-
-            // Update dashboard
-            loadAdminData();
         }
 
-        function showUploadResults(results) {
-            const resultsTable = document.getElementById('uploadResults');
-            resultsTable.innerHTML = '';
-
-            if (results.length === 0) {
-                resultsTable.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--gray);">No results to display</td></tr>';
-                return;
-            }
-
-            results.forEach(result => {
-                const row = document.createElement('tr');
-                row.className = result.status === 'duplicate' ? 'duplicate-ip' : '';
-                
-                let statusBadge = '';
-                if (result.status === 'success') {
-                    statusBadge = '<span class="status-active">✅ Success</span>';
-                } else if (result.status === 'duplicate') {
-                    statusBadge = '<span class="status-inactive">❌ Duplicate</span>';
-                } else {
-                    statusBadge = '<span style="color: var(--warning); font-weight: 600;">⚠️ Invalid</span>';
-                }
-
-                row.innerHTML = `
-                    <td><code>${result.ip}</code></td>
-                    <td>${statusBadge}</td>
-                    <td>${result.message}</td>
+        // ========== CLEAR DATABASE FUNCTION ==========
+        async function clearDatabase() {
+            const password = prompt('Enter admin password:');
+            if (password !== 'Admin@123Secure') {
+                adminResult.innerHTML = `
+                    <div class="paper-message paper-error" style="margin: 0; position: relative;">
+                        <div class="message-header">
+                            <div class="message-icon">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <div class="message-title">Invalid Password</div>
+                        </div>
+                        <div class="message-content">Access denied!</div>
+                    </div>
                 `;
-                resultsTable.appendChild(row);
-            });
-        }
-
-        function clearBulkInput() {
-            document.getElementById('bulkIPs').value = '';
-            document.getElementById('uploadResults').innerHTML = 
-                '<tr><td colspan="3" style="text-align: center; color: var(--gray);">No uploads yet</td></tr>';
-        }
-
-        function generateSampleIPs() {
-            const sampleIPs = [];
-            for (let i = 1; i <= 10; i++) {
-                sampleIPs.push(`192.168.1.${i}`);
-                sampleIPs.push(`10.0.0.${i}`);
+                return null;
             }
-            document.getElementById('bulkIPs').value = sampleIPs.join('\n');
-            showNotification('Sample IPs generated! You can modify them as needed.', 'success');
-        }
-
-        function loadUsersData() {
-            const users = getUserAccounts();
-            const allIPs = getAllStoredIPs();
-            const usersTable = document.getElementById('usersTable');
-            usersTable.innerHTML = '';
-
-            Object.values(users).forEach(user => {
-                const userIPs = allIPs.filter(ip => ip.userId === user.id);
-
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><strong>${user.id}</strong></td>
-                    <td>${user.name}</td>
-                    <td><span class="${user.status === 'Active' ? 'status-active' : 'status-inactive'}">${user.status}</span></td>
-                    <td>${new Date(user.created).toLocaleDateString()}</td>
-                    <td><strong>${userIPs.length}</strong></td>
-                    <td>
-                        <button class="btn btn-danger btn-sm" onclick="deleteUser('${user.id}')">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                    </td>
-                `;
-                usersTable.appendChild(row);
-            });
-        }
-
-        function loadIPsData() {
-            const allIPs = getAllStoredIPs();
-            const allIPsTable = document.getElementById('allIPsTable');
-            allIPsTable.innerHTML = '';
             
-            const searchTerm = document.getElementById('ipSearch').value.toLowerCase();
-            const filteredIPs = allIPs.filter(ip => 
-                ip.ip.includes(searchTerm) || 
-                (ip.userName && ip.userName.toLowerCase().includes(searchTerm))
-            );
-
-            if (filteredIPs.length === 0) {
-                allIPsTable.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--gray);">No IP records found</td></tr>';
-                return;
-            }
-
-            const displayIPs = filteredIPs.slice(-100).reverse();
-            
-            displayIPs.forEach(entry => {
-                const row = document.createElement('tr');
-                const date = new Date(entry.timestamp);
-                row.innerHTML = `
-                    <td><code>${entry.ip}</code></td>
-                    <td><strong>${entry.userName || entry.userId}</strong></td>
-                    <td><span class="status-active">${entry.source || 'admin_panel'}</span></td>
-                    <td>${date.toLocaleDateString()}</td>
-                    <td>${date.toLocaleTimeString()}</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm" onclick="deleteIP('${entry.ip}')">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                    </td>
-                `;
-                allIPsTable.appendChild(row);
-            });
-        }
-
-        function createUser() {
-            const userId = document.getElementById('newUserId').value.trim();
-            const userName = document.getElementById('newUserName').value.trim();
-            const password = document.getElementById('newUserPassword').value.trim();
-            const createBtn = document.querySelector('.btn-success');
-
-            if (!userId || !userName || !password) {
-                showNotification('Please fill all required fields!', 'error');
-                createBtn.classList.add('shake');
-                setTimeout(() => createBtn.classList.remove('shake'), 500);
-                return;
-            }
-
-            const users = getUserAccounts();
-            
-            if (users[userId]) {
-                showNotification('User ID already exists! Choose different ID.', 'error');
-                createBtn.classList.add('shake');
-                setTimeout(() => createBtn.classList.remove('shake'), 500);
-                return;
-            }
-
-            users[userId] = {
-                id: userId,
-                name: userName,
-                password: password,
-                status: 'Active',
-                created: new Date().toISOString()
-            };
-
-            const saved = saveUserAccounts(users);
-            
-            if (saved) {
-                document.getElementById('newUserId').value = '';
-                document.getElementById('newUserName').value = '';
-                document.getElementById('newUserPassword').value = '';
+            try {
+                const response = await fetch(API_BASE_URL + '/api/clear-database', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password: password })
+                });
                 
-                loadUsersData();
-                showNotification(`User "${userName}" created successfully!`, 'success');
-            } else {
-                showNotification('Error saving user! Try again.', 'error');
+                return await response.json();
+            } catch (error) {
+                console.error('Clear DB Error:', error);
+                throw error;
             }
         }
 
-        function deleteUser(userId) {
-            if (userId === 'admin') {
-                showNotification('Cannot delete administrator account!', 'error');
-                return;
-            }
+        // ========== EVENT LISTENERS ==========
+        
+        // Check IP Button
+        checkBtn.addEventListener('click', checkIP);
 
-            if (confirm(`Delete user "${userId}"? This will remove all their IP records!`)) {
-                const users = getUserAccounts();
-                delete users[userId];
-                saveUserAccounts(users);
-                
-                const allIPs = getAllStoredIPs();
-                const updatedIPs = allIPs.filter(ip => ip.userId !== userId);
-                saveAllIPs(updatedIPs);
-                
-                loadUsersData();
-                showNotification('User deleted successfully!', 'success');
-            }
-        }
-
-        function deleteIP(ipAddress) {
-            if (confirm(`Delete IP address ${ipAddress}?`)) {
-                const allIPs = getAllStoredIPs();
-                const updatedIPs = allIPs.filter(entry => entry.ip !== ipAddress);
-                saveAllIPs(updatedIPs);
-                loadIPsData();
-                loadAdminData();
-                showNotification('IP address deleted from centralized storage!', 'success');
-            }
-        }
-
-        function clearAllIPs() {
-            if (confirm('🚨 CRITICAL ACTION!\n\nDelete ALL IP records from centralized storage?\n\nThis cannot be undone!')) {
-                saveAllIPs([]);
-                loadIPsData();
-                loadAdminData();
-                showNotification('All IP records cleared from centralized storage!', 'success');
-            }
-        }
-
-        function exportIPs() {
-            const allIPs = getAllStoredIPs();
-            const ipList = allIPs.map(ip => ip.ip).join('\n');
-            const blob = new Blob([ipList], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'ip_list.txt';
-            a.click();
-            URL.revokeObjectURL(url);
-            showNotification('IP list exported successfully from centralized storage!', 'success');
-        }
-
-        // Search functionality
-        document.getElementById('userSearch').addEventListener('input', loadUsersData);
-        document.getElementById('ipSearch').addEventListener('input', loadIPsData);
-
-        // Enter key support
-        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+        // Enter key in input
+        ipInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                login();
+                checkIP();
             }
         });
 
-        // ✅ Initialize system properly
-        function initializeSystem() {
-            const users = getUserAccounts();
-            const defaultUsers = getDefaultUsers();
-            
-            // Merge existing users with default users
-            const updatedUsers = { ...defaultUsers, ...users };
-            saveUserAccounts(updatedUsers);
-            
-            console.log('🔄 Admin Panel Initialized');
-            console.log('📊 Current IPs in centralized storage:', getAllStoredIPs());
-            console.log('👥 Current Users in system:', Object.keys(updatedUsers));
-        }
+        // Logout Button
+        logoutBtn.addEventListener('click', () => {
+            showPaperMessage(
+                'Logged Out',
+                'You have been successfully logged out<br><small>System is ready for new session</small>',
+                true
+            );
+        });
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeSystem();
+        // Admin Toggle
+        adminToggle.addEventListener('click', () => {
+            const password = prompt('Enter admin password:');
+            if (password === 'Admin@123Secure') {
+                adminPanel.style.display = adminPanel.style.display === 'block' ? 'none' : 'block';
+                adminToggle.style.color = adminPanel.style.display === 'block' ? '#4361ee' : '#636e72';
+                
+                if (adminPanel.style.display === 'block') {
+                    adminPanel.style.animation = 'slideInUp 0.6s ease-out';
+                }
+            } else if (password) {
+                showPaperMessage('Access Denied', 'Invalid admin password!', false);
+            }
+        });
+
+        // Clear Database Button
+        clearDbBtn.addEventListener('click', async () => {
+            const confirm = window.confirm('⚠️ WARNING: This will DELETE ALL IP addresses from database.\n\nAre you absolutely sure?');
+            
+            if (!confirm) return;
+            
+            // Show loading on button
+            const originalText = clearDbBtn.innerHTML;
+            clearDbBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Clearing Database...</span>';
+            clearDbBtn.disabled = true;
+            
+            try {
+                const result = await clearDatabase();
+                
+                if (!result) return;
+                
+                if (result.success) {
+                    // Show success message in paper style
+                    showPaperMessage(
+                        'Database Cleared',
+                        `${result.message}<br><small>${result.removed} IP addresses removed</small>`,
+                        true
+                    );
+                    
+                    // Update admin panel
+                    adminResult.innerHTML = `
+                        <div class="paper-message paper-success" style="margin: 0; position: relative;">
+                            <div class="message-header">
+                                <div class="message-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="message-title">Success!</div>
+                            </div>
+                            <div class="message-content">${result.message}</div>
+                        </div>
+                    `;
+                } else {
+                    adminResult.innerHTML = `
+                        <div class="paper-message paper-error" style="margin: 0; position: relative;">
+                            <div class="message-header">
+                                <div class="message-icon">
+                                    <i class="fas fa-times"></i>
+                                </div>
+                                <div class="message-title">Error</div>
+                            </div>
+                            <div class="message-content">${result.message}</div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                adminResult.innerHTML = `
+                    <div class="paper-message paper-error" style="margin: 0; position: relative;">
+                        <div class="message-header">
+                            <div class="message-icon">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <div class="message-title">Server Error</div>
+                        </div>
+                        <div class="message-content">Failed to clear database. Check console.</div>
+                    </div>
+                `;
+                console.error('Clear DB Error:', error);
+            } finally {
+                // Reset button
+                clearDbBtn.innerHTML = originalText;
+                clearDbBtn.disabled = false;
+                
+                // Clear admin result after 6 seconds
+                setTimeout(() => {
+                    adminResult.innerHTML = '';
+                }, 6000);
+            }
+        });
+
+        // Input validation
+        ipInput.addEventListener('blur', () => {
+            const ip = ipInput.value.trim();
+            if (ip) {
+                const ipPattern = /^(\d{1,3}\.){3}\d{1,3}$/;
+                if (!ipPattern.test(ip)) {
+                    ipInput.style.borderColor = '#e74c3c';
+                    showPaperMessage('Format Error', 'Invalid IP address format', false);
+                } else {
+                    ipInput.style.borderColor = '#e0e0e0';
+                }
+            }
+        });
+
+        // Focus input on load
+        window.addEventListener('DOMContentLoaded', () => {
+            ipInput.focus();
+            console.log('✅ IP Checker System Loaded with Paper Messages');
+            console.log('🌐 API: http://localhost:5000/api');
+            console.log('🔐 Admin: Admin@123Secure');
+            
+            // Show welcome message
+            setTimeout(() => {
+                showPaperMessage(
+                    'Welcome to IP Validator',
+                    'Enter an IP address to check if it\'s duplicate or unique<br><small>Format: 192.168.1.1</small>',
+                    true
+                );
+            }, 1000);
+        });
+
+        // Real-time input validation
+        ipInput.addEventListener('input', () => {
+            ipInput.style.borderColor = '#e0e0e0';
         });
     </script>
 </body>
